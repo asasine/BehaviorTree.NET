@@ -64,7 +64,7 @@ namespace BehaviorTree.NET.Nodes.Control.Test
         [Fact]
         public void ChildrenAfterRunningNotTicked()
         {
-            // two children, one that returns failure and another
+            // two children, one that returns running and another
             // the other should never be ticked
             var alwaysRunningChild = new ReturnXNode(NodeStatus.RUNNING);
             var otherChild = new ReturnXNode(NodeStatus.SUCCESS);
