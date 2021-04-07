@@ -5,7 +5,7 @@ namespace BehaviorTree.NET.Nodes.Action.Test
     public class AlwaysFailureNodeTests
     {
         [Fact]
-        public void TickReturnsTrue()
+        public void TickReturnsFailure()
         {
             var node = new AlwaysFailureNode();
             var status = node.Tick();

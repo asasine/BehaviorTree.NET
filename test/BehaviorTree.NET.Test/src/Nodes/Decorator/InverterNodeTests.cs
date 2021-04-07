@@ -6,7 +6,7 @@ namespace BehaviorTree.NET.Nodes.Decorator.Test
     public class InverterNodeTests
     {
         [Fact]
-        public void TickReturnsFailure()
+        public void SuccessChildReturnsFailure()
         {
             var child = new AlwaysSuccessNode();
             var inverterNode = new InverterNode(child);
@@ -16,7 +16,7 @@ namespace BehaviorTree.NET.Nodes.Decorator.Test
         }
 
         [Fact]
-        public void TickReturnsSuccess()
+        public void FailureChildReturnsSuccess()
         {
             var child = new AlwaysFailureNode();
             var inverterNode = new InverterNode(child);
