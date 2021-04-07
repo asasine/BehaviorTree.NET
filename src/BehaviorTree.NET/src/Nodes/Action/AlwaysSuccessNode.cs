@@ -1,6 +1,6 @@
 namespace BehaviorTree.NET.Nodes.Action
 {
-    public class AlwaysSuccessNode : Node
+    public class AlwaysSuccessNode : ActionNode
     {
         public override NodeStatus Tick()
         {
