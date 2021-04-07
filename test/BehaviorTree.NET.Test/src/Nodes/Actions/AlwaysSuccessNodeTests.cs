@@ -2,12 +2,12 @@ using Xunit;
 
 namespace BehaviorTree.NET.Nodes.Action.Test
 {
-    public class AlwaysSucceedNodeTests
+    public class AlwaysSuccessNodeTests
     {
         [Fact]
         public void TickReturnsTrue()
         {
-            var node = new AlwaysSucceedNode();
+            var node = new AlwaysSuccessNode();
             var status = node.Tick();
             Assert.Equal(NodeStatus.SUCCESS, status);
         }
