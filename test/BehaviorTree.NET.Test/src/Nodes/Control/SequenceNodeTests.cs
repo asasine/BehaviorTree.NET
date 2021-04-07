@@ -81,9 +81,10 @@ namespace BehaviorTree.NET.Nodes.Control.Test
         }
 
         [Fact]
-        public void RestartsAfterFailure()
+        public void ContinuesAfterSuccess()
         {
             // three children: success, failure, other
+            // index should continue after success and tick failure
             // index should restart after failure and success should be ticked again
             var alwaysSuccessChild = new ReturnXNode(NodeStatus.SUCCESS);
             var alwaysFailureChild = new ReturnXNode(NodeStatus.FAILURE);
@@ -109,10 +110,11 @@ namespace BehaviorTree.NET.Nodes.Control.Test
         }
 
         [Fact]
-        public void DoesNotRestartAfterRunning()
+        public void ResumesFromRunning()
         {
             // three children: success, running, other
-            // index should not restart afterrunning and success should not be ticked again
+            // index should continue after success and tick running
+            // index should not restart after running and success should not be ticked again
             var alwaysSuccessChild = new ReturnXNode(NodeStatus.SUCCESS);
             var alwaysRunningChild = new ReturnXNode(NodeStatus.RUNNING);
             var otherChild = new ReturnXNode(NodeStatus.SUCCESS);
