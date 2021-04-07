@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BehaviorTree.NET\BehaviorTree.NET.csproj" />
+    <ProjectReference Include="..\..\src\BehaviorTree.NET\BehaviorTree.NET.csproj" />
   </ItemGroup>
 
 </Project>
