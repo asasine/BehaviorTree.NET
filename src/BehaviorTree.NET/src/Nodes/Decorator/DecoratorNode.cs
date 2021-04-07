@@ -8,5 +8,10 @@ namespace BehaviorTree.NET.Nodes.Decorator
         }
 
         public Node Child { get; }
+
+        public override void Halt()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

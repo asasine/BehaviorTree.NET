@@ -10,14 +10,21 @@ namespace BehaviorTree.NET.Nodes.Action.Test
         {
             this.x = x;
             this.Ticks = 0;
+            this.Halts = 0;
         }
 
         public int Ticks { get; private set; }
+        public int Halts { get; private set; }
 
         public override NodeStatus Tick()
         {
             this.Ticks++;
             return this.x;
+        }
+
+        public override void Halt()
+        {
+            this.Halts++;
         }
     }
 
@@ -31,6 +38,7 @@ namespace BehaviorTree.NET.Nodes.Action.Test
         {
             var node = new ReturnXNode(expectedStatus);
             Assert.Equal(0, node.Ticks);
+            Assert.Equal(0, node.Halts);
         }
 
         [Theory]
@@ -59,6 +67,22 @@ namespace BehaviorTree.NET.Nodes.Action.Test
             }
 
             Assert.Equal(expectedTicks, node.Ticks);
+        }
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(1)]
+        [InlineData(10)]
+        [InlineData(100)]
+        public void HaltCounter(int expectedHalts)
+        {
+            var node = new ReturnXNode(NodeStatus.SUCCESS);
+            for (int i = 0; i < expectedHalts; i++)
+            {
+                node.Halt();
+            }
+
+            Assert.Equal(expectedHalts, node.Halts);
         }
     }
 }

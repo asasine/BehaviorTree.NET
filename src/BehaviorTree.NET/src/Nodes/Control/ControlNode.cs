@@ -11,5 +11,10 @@ namespace BehaviorTree.NET.Nodes.Control
         }
 
         public IReadOnlyList<Node> Children { get; }
+
+        public override void Halt()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
