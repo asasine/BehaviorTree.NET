@@ -14,7 +14,10 @@ namespace BehaviorTree.NET.Nodes.Control
 
         public override void Halt()
         {
-            throw new System.NotImplementedException();
+            foreach (var child in this.Children)
+            {
+                child.Halt();
+            }
         }
     }
 }
