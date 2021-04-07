@@ -66,7 +66,7 @@ namespace BehaviorTree.NET.Nodes.Control.Test
         [InlineData(100)]
         public void HaltCallsAllChildrenHalt(int expectedHalts)
         {
-            var children = new Node[]
+            var children = new ReturnXNode[]
             {
                 new ReturnXNode(NodeStatus.SUCCESS),
                 new ReturnXNode(NodeStatus.FAILURE),
@@ -80,11 +80,9 @@ namespace BehaviorTree.NET.Nodes.Control.Test
             }
 
             Assert.Equal(expectedHalts, node.Halts);
-            foreach (var child in node.Children)
+            foreach (var child in children)
             {
-                // sanity check
-                var returnXNode = Assert.IsAssignableFrom<ReturnXNode>(child);
-                Assert.Equal(expectedHalts, returnXNode.Halts);
+                Assert.Equal(expectedHalts, child.Halts);
             }
         }
     }
