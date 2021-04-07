@@ -10,7 +10,7 @@ namespace BehaviorTree.NET.Nodes.Control.Test
         [Fact]
         public void NoChildrenReturnsSuccess()
         {
-            var node = new SequenceNode(new Node[0]);
+            var node = new SequenceNode(new INode[0]);
             var status = node.Tick();
             Assert.Equal(NodeStatus.SUCCESS, status);
         }
@@ -67,7 +67,7 @@ namespace BehaviorTree.NET.Nodes.Control.Test
             // halt should be called on all children after a failure
             var alwaysFailureChild = new ReturnXNode(NodeStatus.FAILURE);
             var otherChild = new ReturnXNode(NodeStatus.SUCCESS);
-            var node = new SequenceNode(new List<Node>
+            var node = new SequenceNode(new List<INode>
             {
                 alwaysFailureChild,
                 otherChild,
@@ -89,7 +89,7 @@ namespace BehaviorTree.NET.Nodes.Control.Test
             // since the sequence is incomplete, halt should not be called yet
             var alwaysRunningChild = new ReturnXNode(NodeStatus.RUNNING);
             var otherChild = new ReturnXNode(NodeStatus.SUCCESS);
-            var node = new SequenceNode(new List<Node>
+            var node = new SequenceNode(new List<INode>
             {
                 alwaysRunningChild,
                 otherChild,
@@ -113,7 +113,7 @@ namespace BehaviorTree.NET.Nodes.Control.Test
             var alwaysSuccessChild = new ReturnXNode(NodeStatus.SUCCESS);
             var alwaysFailureChild = new ReturnXNode(NodeStatus.FAILURE);
             var otherChild = new ReturnXNode(NodeStatus.SUCCESS);
-            var node = new SequenceNode(new List<Node>
+            var node = new SequenceNode(new List<INode>
             {
                 alwaysSuccessChild,
                 alwaysFailureChild,
@@ -149,7 +149,7 @@ namespace BehaviorTree.NET.Nodes.Control.Test
             var alwaysSuccessChild = new ReturnXNode(NodeStatus.SUCCESS);
             var alwaysRunningChild = new ReturnXNode(NodeStatus.RUNNING);
             var otherChild = new ReturnXNode(NodeStatus.SUCCESS);
-            var node = new SequenceNode(new List<Node>
+            var node = new SequenceNode(new List<INode>
             {
                 alwaysSuccessChild,
                 alwaysRunningChild,
@@ -182,7 +182,7 @@ namespace BehaviorTree.NET.Nodes.Control.Test
             var alwaysSuccessChild = new ReturnXNode(NodeStatus.SUCCESS);
             var alwaysRunningChild = new ReturnXNode(NodeStatus.RUNNING);
             var otherChild = new ReturnXNode(NodeStatus.SUCCESS);
-            var node = new SequenceNode(new List<Node>
+            var node = new SequenceNode(new List<INode>
             {
                 alwaysSuccessChild,
                 alwaysRunningChild,

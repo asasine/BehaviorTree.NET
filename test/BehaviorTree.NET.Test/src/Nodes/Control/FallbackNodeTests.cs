@@ -10,7 +10,7 @@ namespace BehaviorTree.NET.Nodes.Control.Test
         [Fact]
         public void NoChildrenReturnsFailure()
         {
-            var node = new FallbackNode(new Node[0]);
+            var node = new FallbackNode(new INode[0]);
             var status = node.Tick();
             Assert.Equal(NodeStatus.FAILURE, status);
         }
@@ -67,7 +67,7 @@ namespace BehaviorTree.NET.Nodes.Control.Test
             // a successful fallback should halt all children
             var success = new ReturnXNode(NodeStatus.SUCCESS);
             var other = new ReturnXNode(NodeStatus.SUCCESS);
-            var node = new FallbackNode(new List<Node>
+            var node = new FallbackNode(new List<INode>
             {
                 success,
                 other,
@@ -89,7 +89,7 @@ namespace BehaviorTree.NET.Nodes.Control.Test
             // a running fallback should not halt any children yet
             var running = new ReturnXNode(NodeStatus.RUNNING);
             var other = new ReturnXNode(NodeStatus.SUCCESS);
-            var node = new FallbackNode(new List<Node>
+            var node = new FallbackNode(new List<INode>
             {
                 running,
                 other,
@@ -113,7 +113,7 @@ namespace BehaviorTree.NET.Nodes.Control.Test
             var failure = new ReturnXNode(NodeStatus.FAILURE);
             var success = new ReturnXNode(NodeStatus.SUCCESS);
             var other = new ReturnXNode(NodeStatus.SUCCESS);
-            var node = new FallbackNode(new List<Node>
+            var node = new FallbackNode(new List<INode>
             {
                 failure,
                 success,
@@ -149,7 +149,7 @@ namespace BehaviorTree.NET.Nodes.Control.Test
             var failure = new ReturnXNode(NodeStatus.FAILURE);
             var running = new ReturnXNode(NodeStatus.RUNNING);
             var other = new ReturnXNode(NodeStatus.SUCCESS);
-            var node = new FallbackNode(new List<Node>
+            var node = new FallbackNode(new List<INode>
             {
                 failure,
                 running,

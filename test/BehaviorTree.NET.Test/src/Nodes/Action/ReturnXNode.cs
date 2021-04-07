@@ -2,7 +2,7 @@ using Xunit;
 
 namespace BehaviorTree.NET.Nodes.Action.Test
 {
-    public class ReturnXNode : ActionNode
+    public class ReturnXNode : IActionNode
     {
         private readonly NodeStatus x;
 
@@ -16,13 +16,13 @@ namespace BehaviorTree.NET.Nodes.Action.Test
         public int Ticks { get; private set; }
         public int Halts { get; private set; }
 
-        public override NodeStatus Tick()
+        public NodeStatus Tick()
         {
             this.Ticks++;
             return this.x;
         }
 
-        public override void Halt()
+        public void Halt()
         {
             this.Halts++;
         }

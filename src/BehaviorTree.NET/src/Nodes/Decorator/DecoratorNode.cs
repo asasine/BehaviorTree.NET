@@ -1,14 +1,16 @@
 namespace BehaviorTree.NET.Nodes.Decorator
 {
-    public abstract class DecoratorNode : Node
+    public abstract class DecoratorNode : INode
     {
-        public DecoratorNode(Node child)
+        public DecoratorNode(INode child)
         {
             this.Child = child;
         }
 
-        public Node Child { get; }
+        public INode Child { get; }
 
-        public override void Halt() => this.Child.Halt();
+        public abstract NodeStatus Tick();
+
+        public virtual void Halt() => this.Child.Halt();
     }
 }

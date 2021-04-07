@@ -2,7 +2,7 @@ namespace BehaviorTree.NET.Nodes.Decorator
 {
     public class ForceFailureNode : DecoratorNode
     {
-        public ForceFailureNode(Node child)
+        public ForceFailureNode(INode child)
             : base(child)
         {
         }

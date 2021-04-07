@@ -3,16 +3,18 @@ using System.Linq;
 
 namespace BehaviorTree.NET.Nodes.Control
 {
-    public abstract class ControlNode : Node
+    public abstract class ControlNode : INode
     {
-        public ControlNode(IEnumerable<Node> children)
+        public ControlNode(IEnumerable<INode> children)
         {
             this.Children = children.ToList();
         }
 
-        public IReadOnlyList<Node> Children { get; }
+        public IReadOnlyList<INode> Children { get; }
 
-        public override void Halt()
+        public abstract NodeStatus Tick();
+
+        public virtual void Halt()
         {
             for (int i = 0; i < this.Children.Count; i++)
             {

@@ -4,7 +4,7 @@ namespace BehaviorTree.NET.Nodes.Control
 {
     public class FallbackNode : ControlNode
     {
-        public FallbackNode(IEnumerable<Node> children)
+        public FallbackNode(IEnumerable<INode> children)
             : base(children)
         {
         }

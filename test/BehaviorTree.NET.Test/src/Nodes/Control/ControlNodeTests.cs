@@ -10,7 +10,7 @@ namespace BehaviorTree.NET.Nodes.Control.Test
     {
         private readonly NodeStatus x;
 
-        public ReturnXControlNode(NodeStatus x, IEnumerable<Node> children)
+        public ReturnXControlNode(NodeStatus x, IEnumerable<INode> children)
             : base(children)
         {
             this.x = x;
@@ -47,7 +47,7 @@ namespace BehaviorTree.NET.Nodes.Control.Test
         {
             // always ignores childStatus and simply returns expectedStatus
             var child = new ReturnXNode(childStatus);
-            var node = new ReturnXControlNode(expectedStatus, new Node[]
+            var node = new ReturnXControlNode(expectedStatus, new INode[]
             {
                 child,
             });

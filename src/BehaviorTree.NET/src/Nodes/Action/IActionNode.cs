@@ -1,6 +1,6 @@
 namespace BehaviorTree.NET.Nodes.Action
 {
-    public abstract class ActionNode : Node
+    public interface IActionNode : INode
     {
     }
 }

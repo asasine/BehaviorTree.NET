@@ -2,7 +2,7 @@ namespace BehaviorTree.NET.Nodes.Decorator
 {
     public class InverterNode : DecoratorNode
     {
-        public InverterNode(Node child)
+        public InverterNode(INode child)
             : base(child)
         {
         }

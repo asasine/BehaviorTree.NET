@@ -1,8 +1,10 @@
 namespace BehaviorTree.NET.Nodes.Action
 {
-    public abstract class SyncActionNode : ActionNode
+    public abstract class SyncActionNode : IActionNode
     {
-        public override void Halt()
+        public abstract NodeStatus Tick();
+
+        public void Halt()
         {
         }
     }
