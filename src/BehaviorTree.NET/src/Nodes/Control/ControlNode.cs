@@ -14,10 +14,15 @@ namespace BehaviorTree.NET.Nodes.Control
 
         public override void Halt()
         {
-            foreach (var child in this.Children)
+            for (int i = 0; i < this.Children.Count; i++)
             {
-                child.Halt();
+                HaltChild(i);
             }
+        }
+
+        public void HaltChild(int index)
+        {
+            this.Children[index].Halt();
         }
     }
 }

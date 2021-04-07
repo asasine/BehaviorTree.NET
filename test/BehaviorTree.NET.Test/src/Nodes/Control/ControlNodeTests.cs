@@ -85,5 +85,37 @@ namespace BehaviorTree.NET.Nodes.Control.Test
                 Assert.Equal(expectedHalts, child.Halts);
             }
         }
+
+        [Fact]
+        public void HaltChildCallsChildHalt()
+        {
+            var children = new ReturnXNode[]
+            {
+                new ReturnXNode(NodeStatus.SUCCESS),
+                new ReturnXNode(NodeStatus.FAILURE),
+                new ReturnXNode(NodeStatus.RUNNING),
+            };
+
+            var node = new ReturnXControlNode(NodeStatus.SUCCESS, children);
+
+            // halt each child in turn, assert no other halts were called
+            for (int haltIndex = 0; haltIndex < children.Length; haltIndex++)
+            {
+                node.HaltChild(haltIndex);
+
+                for (int i = 0; i < children.Length; i++)
+                {
+                    var child = children[i];
+                    if (i <= haltIndex)
+                    {
+                        Assert.Equal(1, child.Halts);
+                    }
+                    else
+                    {
+                        Assert.Equal(0, child.Halts);
+                    }
+                }
+            }
+        }
     }
 }
