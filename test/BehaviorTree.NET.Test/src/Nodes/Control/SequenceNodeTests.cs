@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using BehaviorTree.NET.Nodes.Action.Test;
 using Xunit;
 
@@ -15,37 +16,47 @@ namespace BehaviorTree.NET.Nodes.Control.Test
         }
 
         [Fact]
-        public void OneSuccessChildReturnsSuccess()
+        public void AllChildrenSucceed()
         {
             // a successful sequence returns success
             // halt should be called when the sequence completes
-            var child = new ReturnXNode(NodeStatus.SUCCESS);
-            var node = new SequenceNode(new List<Node>
-            {
-               child,
-            });
+            var children = Enumerable
+                .Range(0, 10)
+                .Select(_ => new ReturnXNode(NodeStatus.SUCCESS))
+                .ToArray();
+
+            var node = new SequenceNode(children);
 
             var status = node.Tick();
             Assert.Equal(NodeStatus.SUCCESS, status);
-            Assert.Equal(1, child.Ticks);
-            Assert.Equal(1, child.Halts);
+            foreach (var child in children)
+            {
+                Assert.Equal(1, child.Ticks);
+                Assert.Equal(1, child.Halts);
+            }
         }
 
         [Fact]
-        public void OneFailureChildReturnsFailure()
+        public void AllChildrenFail()
         {
             // a failing sequence should return failure
             // halt should be called when a sequence fails
-            var child = new ReturnXNode(NodeStatus.FAILURE);
-            var node = new SequenceNode(new List<Node>
-            {
-                child,
-            });
+            var children = Enumerable
+                .Range(0, 10)
+                .Select(_ => new ReturnXNode(NodeStatus.FAILURE))
+                .ToArray();
+
+            var node = new SequenceNode(children);
 
             var status = node.Tick();
             Assert.Equal(NodeStatus.FAILURE, status);
-            Assert.Equal(1, child.Ticks);
-            Assert.Equal(1, child.Halts);
+            for (int i = 0; i < children.Length; i++)
+            {
+                var child = children[i];
+                var expectedTicks = i == 0 ? 1 : 0;
+                Assert.Equal(expectedTicks, child.Ticks);
+                Assert.Equal(1, child.Halts);
+            }
         }
 
         [Fact]

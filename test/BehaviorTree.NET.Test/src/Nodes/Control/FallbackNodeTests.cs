@@ -39,7 +39,7 @@ namespace BehaviorTree.NET.Nodes.Control.Test
         }
 
         [Fact]
-        public void AllChildrenFailure()
+        public void AllChildrenFail()
         {
             // all children failing should fail a fallback
             // a failed fallback should halt all children
