@@ -1,6 +1,6 @@
 namespace BehaviorTree.NET.Nodes.Action
 {
-    public class AlwaysFailureNode : ActionNode
+    public class AlwaysFailureNode : SyncActionNode
     {
         public override NodeStatus Tick()
         {
