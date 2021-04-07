@@ -174,5 +174,44 @@ namespace BehaviorTree.NET.Nodes.Control.Test
             Assert.Equal(0, alwaysRunningChild.Halts);
             Assert.Equal(0, otherChild.Halts);
         }
+
+        [Fact]
+        public void RestartsAfterHalt()
+        {
+            // sequence should restart from beginning when halted while still running
+            var alwaysSuccessChild = new ReturnXNode(NodeStatus.SUCCESS);
+            var alwaysRunningChild = new ReturnXNode(NodeStatus.RUNNING);
+            var otherChild = new ReturnXNode(NodeStatus.SUCCESS);
+            var node = new SequenceNode(new List<Node>
+            {
+                alwaysSuccessChild,
+                alwaysRunningChild,
+                otherChild,
+            });
+
+            // starts at the beginning
+            var status = node.Tick();
+            Assert.Equal(NodeStatus.RUNNING, status);
+            Assert.Equal(1, alwaysSuccessChild.Ticks);
+            Assert.Equal(1, alwaysRunningChild.Ticks);
+            Assert.Equal(0, otherChild.Ticks);
+
+            // resumes from running child
+            status = node.Tick();
+            Assert.Equal(1, alwaysSuccessChild.Ticks);
+            Assert.Equal(2, alwaysRunningChild.Ticks);
+            Assert.Equal(0, otherChild.Ticks);
+
+            node.Halt();
+            Assert.Equal(1, alwaysSuccessChild.Halts);
+            Assert.Equal(1, alwaysRunningChild.Halts);
+            Assert.Equal(1, otherChild.Halts);
+
+            // restarts at the beginning
+            status = node.Tick();
+            Assert.Equal(2, alwaysSuccessChild.Ticks);
+            Assert.Equal(3, alwaysRunningChild.Ticks);
+            Assert.Equal(0, otherChild.Ticks);
+        }
     }
 }
