@@ -17,6 +17,8 @@ namespace BehaviorTree.NET.Nodes.Control
                 switch (status)
                 {
                     case NodeStatus.SUCCESS:
+                        this.Halt();
+                        return status;
                     case NodeStatus.RUNNING:
                         return status;
                     case NodeStatus.FAILURE:
@@ -24,6 +26,7 @@ namespace BehaviorTree.NET.Nodes.Control
                 }
             }
 
+            this.Halt();
             return NodeStatus.FAILURE;
         }
     }
