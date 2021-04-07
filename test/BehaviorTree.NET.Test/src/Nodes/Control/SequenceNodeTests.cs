@@ -17,6 +17,8 @@ namespace BehaviorTree.NET.Nodes.Control.Test
         [Fact]
         public void OneSuccessChildReturnsSuccess()
         {
+            // a successful sequence returns success
+            // halt should be called when the sequence completes
             var child = new ReturnXNode(NodeStatus.SUCCESS);
             var node = new SequenceNode(new List<Node>
             {
@@ -26,11 +28,14 @@ namespace BehaviorTree.NET.Nodes.Control.Test
             var status = node.Tick();
             Assert.Equal(NodeStatus.SUCCESS, status);
             Assert.Equal(1, child.Ticks);
+            Assert.Equal(1, child.Halts);
         }
 
         [Fact]
         public void OneFailureChildReturnsFailure()
         {
+            // a failing sequence should return failure
+            // halt should be called when a sequence fails
             var child = new ReturnXNode(NodeStatus.FAILURE);
             var node = new SequenceNode(new List<Node>
             {
@@ -40,6 +45,7 @@ namespace BehaviorTree.NET.Nodes.Control.Test
             var status = node.Tick();
             Assert.Equal(NodeStatus.FAILURE, status);
             Assert.Equal(1, child.Ticks);
+            Assert.Equal(1, child.Halts);
         }
 
         [Fact]
@@ -47,6 +53,7 @@ namespace BehaviorTree.NET.Nodes.Control.Test
         {
             // two children, one that always fails and another
             // the other should never be ticked
+            // halt should be called on all children after a failure
             var alwaysFailureChild = new ReturnXNode(NodeStatus.FAILURE);
             var otherChild = new ReturnXNode(NodeStatus.SUCCESS);
             var node = new SequenceNode(new List<Node>
@@ -59,6 +66,8 @@ namespace BehaviorTree.NET.Nodes.Control.Test
             Assert.Equal(NodeStatus.FAILURE, status);
             Assert.Equal(1, alwaysFailureChild.Ticks);
             Assert.Equal(0, otherChild.Ticks);
+            Assert.Equal(1, alwaysFailureChild.Halts);
+            Assert.Equal(1, otherChild.Halts);
         }
 
         [Fact]
@@ -66,6 +75,7 @@ namespace BehaviorTree.NET.Nodes.Control.Test
         {
             // two children, one that returns running and another
             // the other should never be ticked
+            // since the sequence is incomplete, halt should not be called yet
             var alwaysRunningChild = new ReturnXNode(NodeStatus.RUNNING);
             var otherChild = new ReturnXNode(NodeStatus.SUCCESS);
             var node = new SequenceNode(new List<Node>
@@ -78,6 +88,8 @@ namespace BehaviorTree.NET.Nodes.Control.Test
             Assert.Equal(NodeStatus.RUNNING, status);
             Assert.Equal(1, alwaysRunningChild.Ticks);
             Assert.Equal(0, otherChild.Ticks);
+            Assert.Equal(0, alwaysRunningChild.Halts);
+            Assert.Equal(0, otherChild.Halts);
         }
 
         [Fact]
@@ -86,6 +98,7 @@ namespace BehaviorTree.NET.Nodes.Control.Test
             // three children: success, failure, other
             // index should continue after success and tick failure
             // index should restart after failure and success should be ticked again
+            // halt should be called on all children after each failure
             var alwaysSuccessChild = new ReturnXNode(NodeStatus.SUCCESS);
             var alwaysFailureChild = new ReturnXNode(NodeStatus.FAILURE);
             var otherChild = new ReturnXNode(NodeStatus.SUCCESS);
@@ -101,12 +114,18 @@ namespace BehaviorTree.NET.Nodes.Control.Test
             Assert.Equal(1, alwaysSuccessChild.Ticks);
             Assert.Equal(1, alwaysFailureChild.Ticks);
             Assert.Equal(0, otherChild.Ticks);
+            Assert.Equal(1, alwaysSuccessChild.Halts);
+            Assert.Equal(1, alwaysFailureChild.Halts);
+            Assert.Equal(1, otherChild.Halts);
 
             status = node.Tick();
             Assert.Equal(NodeStatus.FAILURE, status);
             Assert.Equal(2, alwaysSuccessChild.Ticks);
             Assert.Equal(2, alwaysFailureChild.Ticks);
             Assert.Equal(0, otherChild.Ticks);
+            Assert.Equal(2, alwaysSuccessChild.Halts);
+            Assert.Equal(2, alwaysFailureChild.Halts);
+            Assert.Equal(2, otherChild.Halts);
         }
 
         [Fact]
@@ -115,6 +134,7 @@ namespace BehaviorTree.NET.Nodes.Control.Test
             // three children: success, running, other
             // index should continue after success and tick running
             // index should not restart after running and success should not be ticked again
+            // halts should not be called on incomplete sequences
             var alwaysSuccessChild = new ReturnXNode(NodeStatus.SUCCESS);
             var alwaysRunningChild = new ReturnXNode(NodeStatus.RUNNING);
             var otherChild = new ReturnXNode(NodeStatus.SUCCESS);
@@ -130,12 +150,18 @@ namespace BehaviorTree.NET.Nodes.Control.Test
             Assert.Equal(1, alwaysSuccessChild.Ticks);
             Assert.Equal(1, alwaysRunningChild.Ticks);
             Assert.Equal(0, otherChild.Ticks);
+            Assert.Equal(0, alwaysSuccessChild.Halts);
+            Assert.Equal(0, alwaysRunningChild.Halts);
+            Assert.Equal(0, otherChild.Halts);
 
             status = node.Tick();
             Assert.Equal(NodeStatus.RUNNING, status);
             Assert.Equal(1, alwaysSuccessChild.Ticks);
             Assert.Equal(2, alwaysRunningChild.Ticks);
             Assert.Equal(0, otherChild.Ticks);
+            Assert.Equal(0, alwaysSuccessChild.Halts);
+            Assert.Equal(0, alwaysRunningChild.Halts);
+            Assert.Equal(0, otherChild.Halts);
         }
     }
 }

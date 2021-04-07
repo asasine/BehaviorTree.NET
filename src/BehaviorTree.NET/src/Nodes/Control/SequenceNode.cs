@@ -23,14 +23,21 @@ namespace BehaviorTree.NET.Nodes.Control
                     case NodeStatus.SUCCESS:
                         continue;
                     case NodeStatus.FAILURE:
-                        this.index = 0;
+                        this.Halt();
                         return status;
                     case NodeStatus.RUNNING:
                         return status;
                 }
             }
 
+            this.Halt();
             return NodeStatus.SUCCESS;
+        }
+
+        public override void Halt()
+        {
+            this.index = 0;
+            base.Halt();
         }
     }
 }
