@@ -5,7 +5,7 @@ namespace BehaviorTree.NET.Nodes.Control
 {
     public abstract class ControlNode : Node
     {
-        public ControlNode(IReadOnlyCollection<Node> children)
+        public ControlNode(IEnumerable<Node> children)
         {
             this.Children = children.ToList();
         }

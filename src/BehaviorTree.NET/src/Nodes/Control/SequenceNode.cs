@@ -6,7 +6,7 @@ namespace BehaviorTree.NET.Nodes.Control
     {
         private int index;
 
-        public SequenceNode(IReadOnlyCollection<Node> children)
+        public SequenceNode(IEnumerable<Node> children)
             : base(children)
         {
             this.index = 0;
