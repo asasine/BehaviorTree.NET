@@ -29,7 +29,7 @@ namespace BehaviorTree.NET.Nodes.Control.Test
         }
 
         [Fact]
-        public void OneFailureChildReturnsSuccess()
+        public void OneFailureChildReturnsFailure()
         {
             var child = new ReturnXNode(NodeStatus.FAILURE);
             var node = new SequenceNode(new List<Node>
