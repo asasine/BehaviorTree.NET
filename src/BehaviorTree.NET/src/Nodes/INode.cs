@@ -1,4 +1,4 @@
-namespace BehaviorTree.NET
+namespace BehaviorTree.NET.Nodes
 {
     public interface INode
     {
