@@ -9,6 +9,6 @@ namespace BehaviorTree.NET.Nodes
         void Halt();
 
         IBlackboard Blackboard { get; }
-        IReadOnlyCollection<IBlackboardKey> BlackboardEntries { get; }
+        IReadOnlyCollection<BlackboardKey> BlackboardEntries { get; }
     }
 }

@@ -10,7 +10,7 @@ namespace BehaviorTree.NET.Nodes.Action
         }
 
         public AlwaysSuccessNode(IBlackboard blackboard)
-            : base(blackboard, new IBlackboardKey[0])
+            : base(blackboard, new BlackboardKey[0])
         {
         }
 

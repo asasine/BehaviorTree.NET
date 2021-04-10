@@ -10,7 +10,7 @@ namespace BehaviorTree.NET.Nodes.Decorator
         }
 
         public ForceFailureNode(IBlackboard blackboard, INode child)
-            : base(blackboard, new IBlackboardKey[0], child)
+            : base(blackboard, new BlackboardKey[0], child)
         {
         }
 

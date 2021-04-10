@@ -5,7 +5,7 @@ namespace BehaviorTree.NET.Nodes.Action
 {
     public abstract class SyncActionNode : ActionNode
     {
-        protected SyncActionNode(IBlackboard blackboard, IEnumerable<IBlackboardKey> blackboardEntries)
+        protected SyncActionNode(IBlackboard blackboard, IEnumerable<BlackboardKey> blackboardEntries)
             : base(blackboard, blackboardEntries)
         {
         }

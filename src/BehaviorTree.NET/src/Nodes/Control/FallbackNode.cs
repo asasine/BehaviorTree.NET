@@ -11,7 +11,7 @@ namespace BehaviorTree.NET.Nodes.Control
         }
 
         public FallbackNode(IBlackboard blackboard, IEnumerable<INode> children)
-            : base(blackboard, new IBlackboardKey[0], children)
+            : base(blackboard, new BlackboardKey[0], children)
         {
         }
 

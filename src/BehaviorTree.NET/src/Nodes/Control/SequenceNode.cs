@@ -13,7 +13,7 @@ namespace BehaviorTree.NET.Nodes.Control
         }
 
         public SequenceNode(IBlackboard blackboard, IEnumerable<INode> children)
-            : base(blackboard, new IBlackboardKey[0], children)
+            : base(blackboard, new BlackboardKey[0], children)
         {
             this.index = 0;
         }

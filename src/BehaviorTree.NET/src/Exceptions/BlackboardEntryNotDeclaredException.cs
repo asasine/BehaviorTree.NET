@@ -6,8 +6,8 @@ namespace BehaviorTree.NET.Exceptions
     [System.Serializable]
     public class BlackboardEntryNotDeclaredException : System.Exception
     {
-        public BlackboardEntryNotDeclaredException(params IBlackboardKey[] keys)
-            : base($"Blackboard entries not declared: [{string.Join<IBlackboardKey>(", ", keys)}]")
+        public BlackboardEntryNotDeclaredException(params BlackboardKey[] keys)
+            : base($"Blackboard entries not declared: [{string.Join<BlackboardKey>(", ", keys)}]")
         { }
 
         protected BlackboardEntryNotDeclaredException(

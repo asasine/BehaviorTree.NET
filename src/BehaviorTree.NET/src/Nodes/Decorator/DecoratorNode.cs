@@ -5,7 +5,7 @@ namespace BehaviorTree.NET.Nodes.Decorator
 {
     public abstract class DecoratorNode : Node
     {
-        public DecoratorNode(IBlackboard blackboard, IEnumerable<IBlackboardKey> blackboardEntries, INode child)
+        public DecoratorNode(IBlackboard blackboard, IEnumerable<BlackboardKey> blackboardEntries, INode child)
             : base(blackboard, blackboardEntries)
         {
             this.Child = child;

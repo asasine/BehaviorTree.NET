@@ -6,8 +6,8 @@ namespace BehaviorTree.NET.Exceptions
     [System.Serializable]
     public class BlackboardEntryNotProvidedException : System.Exception
     {
-        public BlackboardEntryNotProvidedException(params IBlackboardKey[] keys)
-            : base($"Blackboard entries missing entries: [{string.Join<IBlackboardKey>(", ", keys)}]")
+        public BlackboardEntryNotProvidedException(params BlackboardKey[] keys)
+            : base($"Blackboard entries missing entries: [{string.Join<BlackboardKey>(", ", keys)}]")
         { }
 
         protected BlackboardEntryNotProvidedException(

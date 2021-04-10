@@ -7,7 +7,7 @@ namespace BehaviorTree.NET.Nodes.Decorator.Test
     public class ForwardToChildNode : DecoratorNode
     {
         public ForwardToChildNode(INode child)
-            : base(null, new IBlackboardKey[0], child)
+            : base(null, new BlackboardKey[0], child)
         {
         }
 

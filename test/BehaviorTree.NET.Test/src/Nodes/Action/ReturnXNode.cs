@@ -8,7 +8,7 @@ namespace BehaviorTree.NET.Nodes.Action.Test
         private readonly NodeStatus x;
 
         public ReturnXNode(NodeStatus x)
-            : base(null, new IBlackboardKey[0])
+            : base(null, new BlackboardKey[0])
         {
             this.x = x;
             this.Ticks = 0;

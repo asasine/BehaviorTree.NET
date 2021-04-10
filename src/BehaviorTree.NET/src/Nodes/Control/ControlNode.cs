@@ -6,7 +6,7 @@ namespace BehaviorTree.NET.Nodes.Control
 {
     public abstract class ControlNode : Node
     {
-        public ControlNode(IBlackboard blackboard, IEnumerable<IBlackboardKey> blackboardEntries, IEnumerable<INode> children)
+        public ControlNode(IBlackboard blackboard, IEnumerable<BlackboardKey> blackboardEntries, IEnumerable<INode> children)
             : base(blackboard, blackboardEntries)
         {
             this.Children = children.ToList();
