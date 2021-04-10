@@ -1,12 +1,13 @@
 using BehaviorTree.NET.Nodes.Action.Test;
 using Xunit;
+using BehaviorTree.NET.Blackboard;
 
 namespace BehaviorTree.NET.Nodes.Decorator.Test
 {
     public class ForwardToChildNode : DecoratorNode
     {
         public ForwardToChildNode(INode child)
-            : base(child)
+            : base(null, new IBlackboardKey[0], child)
         {
         }
 

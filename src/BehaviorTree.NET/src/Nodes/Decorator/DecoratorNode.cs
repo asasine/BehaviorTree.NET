@@ -1,16 +1,18 @@
+using System.Collections.Generic;
+using BehaviorTree.NET.Blackboard;
+
 namespace BehaviorTree.NET.Nodes.Decorator
 {
-    public abstract class DecoratorNode : INode
+    public abstract class DecoratorNode : Node
     {
-        public DecoratorNode(INode child)
+        public DecoratorNode(IBlackboard blackboard, IEnumerable<IBlackboardKey> blackboardEntries, INode child)
+            : base(blackboard, blackboardEntries)
         {
             this.Child = child;
         }
 
         public INode Child { get; }
 
-        public abstract NodeStatus Tick();
-
-        public virtual void Halt() => this.Child.Halt();
+        public override void Halt() => this.Child.Halt();
     }
 }

@@ -1,12 +1,14 @@
 using Xunit;
+using BehaviorTree.NET.Blackboard;
 
 namespace BehaviorTree.NET.Nodes.Action.Test
 {
-    public class ReturnXNode : IActionNode
+    public class ReturnXNode : ActionNode
     {
         private readonly NodeStatus x;
 
         public ReturnXNode(NodeStatus x)
+            : base(null, new IBlackboardKey[0])
         {
             this.x = x;
             this.Ticks = 0;
@@ -16,13 +18,13 @@ namespace BehaviorTree.NET.Nodes.Action.Test
         public int Ticks { get; private set; }
         public int Halts { get; private set; }
 
-        public NodeStatus Tick()
+        public override NodeStatus Tick()
         {
             this.Ticks++;
             return this.x;
         }
 
-        public void Halt()
+        public override void Halt()
         {
             this.Halts++;
         }

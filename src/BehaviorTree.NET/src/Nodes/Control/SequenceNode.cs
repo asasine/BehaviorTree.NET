@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using BehaviorTree.NET.Blackboard;
 
 namespace BehaviorTree.NET.Nodes.Control
 {
@@ -7,7 +8,12 @@ namespace BehaviorTree.NET.Nodes.Control
         private int index;
 
         public SequenceNode(IEnumerable<INode> children)
-            : base(children)
+            : this(null, children)
+        {
+        }
+
+        public SequenceNode(IBlackboard blackboard, IEnumerable<INode> children)
+            : base(blackboard, new IBlackboardKey[0], children)
         {
             this.index = 0;
         }

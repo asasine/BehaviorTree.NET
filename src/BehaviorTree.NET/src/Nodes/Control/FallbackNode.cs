@@ -1,11 +1,17 @@
 using System.Collections.Generic;
+using BehaviorTree.NET.Blackboard;
 
 namespace BehaviorTree.NET.Nodes.Control
 {
     public class FallbackNode : ControlNode
     {
         public FallbackNode(IEnumerable<INode> children)
-            : base(children)
+            : this(null, children)
+        {
+        }
+
+        public FallbackNode(IBlackboard blackboard, IEnumerable<INode> children)
+            : base(blackboard, new IBlackboardKey[0], children)
         {
         }
 

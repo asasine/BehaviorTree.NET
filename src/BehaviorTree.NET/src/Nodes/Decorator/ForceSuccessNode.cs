@@ -1,9 +1,16 @@
+using BehaviorTree.NET.Blackboard;
+
 namespace BehaviorTree.NET.Nodes.Decorator
 {
     public class ForceSuccessNode : DecoratorNode
     {
         public ForceSuccessNode(INode child)
-            : base(child)
+            : this(null, child)
+        {
+        }
+
+        public ForceSuccessNode(IBlackboard blackboard, INode child)
+            : base(blackboard, new IBlackboardKey[0], child)
         {
         }
 

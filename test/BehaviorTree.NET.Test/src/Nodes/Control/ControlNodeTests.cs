@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using BehaviorTree.NET.Nodes.Action.Test;
+using BehaviorTree.NET.Blackboard;
 using Xunit;
 
 namespace BehaviorTree.NET.Nodes.Control.Test
@@ -11,7 +12,7 @@ namespace BehaviorTree.NET.Nodes.Control.Test
         private readonly NodeStatus x;
 
         public ReturnXControlNode(NodeStatus x, IEnumerable<INode> children)
-            : base(children)
+            : base(null, new IBlackboardKey[0], children)
         {
             this.x = x;
         }
