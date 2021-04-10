@@ -7,20 +7,23 @@ namespace BehaviorTree.NET.Nodes
 {
     public abstract class Node : INode
     {
-        public Node(IBlackboard blackboard, IEnumerable<IBlackboardKey> blackboardEntries)
+        private readonly Lazy<IReadOnlyCollection<BlackboardKey>> inputEntries;
+        private readonly Lazy<IReadOnlyCollection<BlackboardKey>> outputEntries;
+
+        public Node(IBlackboard blackboard, IEnumerable<BlackboardKey> blackboardEntries)
         {
             this.Blackboard = blackboard;
             this.BlackboardEntries = blackboardEntries.ToArray();
-            this.InputEntries = this.BlackboardEntries.SelectWhereIs<IBlackboardKey, BlackboardInput>().ToArray();
-            this.OutputEntries = this.BlackboardEntries.SelectWhereIs<IBlackboardKey, BlackboardOutput>().ToArray();
+
+            this.inputEntries = new Lazy<IReadOnlyCollection<BlackboardKey>>(() => this.BlackboardEntries.Where(key => key.IsInput).ToArray());
+            this.outputEntries = new Lazy<IReadOnlyCollection<BlackboardKey>>(() => this.BlackboardEntries.Where(key => key.IsOutput).ToArray());
         }
 
         public IBlackboard Blackboard { get; }
 
-        public IReadOnlyCollection<IBlackboardKey> BlackboardEntries { get; }
-
-        private IReadOnlyCollection<BlackboardInput> InputEntries { get; }
-        private IReadOnlyCollection<BlackboardOutput> OutputEntries { get; }
+        public IReadOnlyCollection<BlackboardKey> BlackboardEntries { get; }
+        private IReadOnlyCollection<BlackboardKey> InputEntries => inputEntries.Value;
+        private IReadOnlyCollection<BlackboardKey> OutputEntries => outputEntries.Value;
 
         public abstract void Halt();
         public abstract NodeStatus Tick();
