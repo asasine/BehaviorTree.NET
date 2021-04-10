@@ -20,7 +20,9 @@ namespace BehaviorTree.NET.Nodes.Decorator.Test
         public void ReturnsSuccessImmediately()
         {
             var blackboard = new Blackboard.Blackboard();
-            blackboard[RetryNode.N] = 0;
+            var writer = blackboard.CreateOutputEntry<int>(RetryNode.KEY_N);
+            writer.SetValue(0);
+
             var child = new ReturnXNode(NodeStatus.SUCCESS);
             var node = new RetryNode(blackboard, child);
             var status = node.Tick();
@@ -32,7 +34,9 @@ namespace BehaviorTree.NET.Nodes.Decorator.Test
         public void HaltsAfterSuccess()
         {
             var blackboard = new Blackboard.Blackboard();
-            blackboard[RetryNode.N] = 0;
+            var writer = blackboard.CreateOutputEntry<int>(RetryNode.KEY_N);
+            writer.SetValue(0);
+
             var child = new ReturnXNode(NodeStatus.SUCCESS);
             var node = new RetryNode(blackboard, child);
             var status = node.Tick();
@@ -44,7 +48,9 @@ namespace BehaviorTree.NET.Nodes.Decorator.Test
         public void HaltsAfterFailure()
         {
             var blackboard = new Blackboard.Blackboard();
-            blackboard[RetryNode.N] = 0;
+            var writer = blackboard.CreateOutputEntry<int>(RetryNode.KEY_N);
+            writer.SetValue(0);
+
             var child = new ReturnXNode(NodeStatus.FAILURE);
             var node = new RetryNode(blackboard, child);
             var status = node.Tick();
@@ -59,7 +65,9 @@ namespace BehaviorTree.NET.Nodes.Decorator.Test
         public void DoesNotHaltAfterRunning(int n)
         {
             var blackboard = new Blackboard.Blackboard();
-            blackboard[RetryNode.N] = 0;
+            var writer = blackboard.CreateOutputEntry<int>(RetryNode.KEY_N);
+            writer.SetValue(0);
+
             var child = new ReturnXNode(NodeStatus.RUNNING);
             var node = new RetryNode(blackboard, child);
             for (int i = 0; i < n; i++)
@@ -79,7 +87,9 @@ namespace BehaviorTree.NET.Nodes.Decorator.Test
         public void ReturnsFailureAfterNFailures(int n)
         {
             var blackboard = new Blackboard.Blackboard();
-            blackboard[RetryNode.N] = n;
+            var writer = blackboard.CreateOutputEntry<int>(RetryNode.KEY_N);
+            writer.SetValue(n);
+
 
             var child = new ReturnXNode(NodeStatus.FAILURE);
             var node = new RetryNode(blackboard, child);

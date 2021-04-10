@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using BehaviorTree.NET.Exceptions;
 using BehaviorTree.NET.Blackboard;
 
@@ -6,28 +5,24 @@ namespace BehaviorTree.NET.Nodes.Decorator
 {
     public class RetryNode : DecoratorNode
     {
-        public const string N = "n";
+        public static readonly BlackboardKey KEY_N = new BlackboardKey("n", BlackboardEntryType.Input);
 
-        private static BlackboardInput INPUT_N = new BlackboardInput(N);
-
-        private static IEnumerable<IBlackboardKey> BLACKBOARD_ENTRIES = new IBlackboardKey[]
-        {
-            INPUT_N,
-        };
+        private readonly IBlackboardReader<int> inputN;
 
         private int numFailures;
 
         public RetryNode(IBlackboard blackboard, INode child)
-            : base(blackboard, BLACKBOARD_ENTRIES, child)
+            : base(blackboard, new BlackboardKey[] { KEY_N }, child)
         {
             numFailures = 0;
+            inputN = this.CreateInputEntry<int>(KEY_N);
         }
 
         public override NodeStatus Tick()
         {
-            if (!this.TryGetInputBlackboardEntry(INPUT_N, out int n))
+            if (!this.inputN.TryGetValue(out int n))
             {
-                throw new BlackboardEntryNotProvidedException(INPUT_N);
+                throw new BlackboardEntryNotProvidedException(inputN.Key);
             }
 
             var status = this.Child.Tick();
