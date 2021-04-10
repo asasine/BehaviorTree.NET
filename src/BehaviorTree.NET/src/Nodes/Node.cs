@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using BehaviorTree.NET.Exceptions;
@@ -5,7 +6,7 @@ using BehaviorTree.NET.Blackboard;
 
 namespace BehaviorTree.NET.Nodes
 {
-    public abstract class Node : INode
+    public abstract class Node : INode, IBlackboard
     {
         private readonly Lazy<IReadOnlyCollection<BlackboardKey>> inputEntries;
         private readonly Lazy<IReadOnlyCollection<BlackboardKey>> outputEntries;
@@ -28,7 +29,7 @@ namespace BehaviorTree.NET.Nodes
         public abstract void Halt();
         public abstract NodeStatus Tick();
 
-        protected bool TryGetInputBlackboardEntry<T>(BlackboardInput key, out T value)
+        public IBlackboardReader<T> CreateInputEntry<T>(in BlackboardKey key)
         {
             var isInputPort = this.InputEntries.Contains(key);
             if (!isInputPort)
@@ -36,10 +37,10 @@ namespace BehaviorTree.NET.Nodes
                 throw new BlackboardEntryNotDeclaredException(key);
             }
 
-            return this.Blackboard.TryGetValue<T>(key.Key, out value);
+            return Blackboard.CreateInputEntry<T>(key);
         }
 
-        protected void SetOutputBlackboardEntry<T>(BlackboardOutput key, T value)
+        public IBlackboardWriter<T> CreateOutputEntry<T>(in BlackboardKey key)
         {
             var isOutputPort = this.OutputEntries.Contains(key);
             if (!isOutputPort)
@@ -47,7 +48,7 @@ namespace BehaviorTree.NET.Nodes
                 throw new BlackboardEntryNotDeclaredException(key);
             }
 
-            this.Blackboard[key.Key] = value;
+            return Blackboard.CreateOutputEntry<T>(key);
         }
     }
 }
