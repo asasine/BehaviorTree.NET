@@ -2,7 +2,7 @@ namespace BehaviorTree.NET.Blackboard
 {
     public interface IBlackboard
     {
-        object this[string key] { set; }
-        bool TryGetValue(string key, out object value);
+        IBlackboardReader<T> CreateInputEntry<T>(in BlackboardKey key);
+        IBlackboardWriter<T> CreateOutputEntry<T>(in BlackboardKey key);
     }
 }
