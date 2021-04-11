@@ -1,9 +1,16 @@
+using BehaviorTree.NET.Blackboard;
+
 namespace BehaviorTree.NET.Nodes.Decorator
 {
     public class RepeatUntilFailureNode : DecoratorNode
     {
         public RepeatUntilFailureNode(INode child)
-            : base(child)
+            : this(null, child)
+        {
+        }
+
+        public RepeatUntilFailureNode(IBlackboard blackboard, INode child)
+            : base(blackboard, new BlackboardKey[0], child)
         {
         }
 
