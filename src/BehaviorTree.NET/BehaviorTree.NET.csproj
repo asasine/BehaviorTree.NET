@@ -1,6 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <PackageId>BehaviorTree.NET</PackageId>
+    <Version>0.0.1</Version>
+    <Authors>asasine</Authors>
+    <Company>asasine</Company>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <ProjectUrl>https://github.com/asasine/BehaviorTree.NET</ProjectUrl>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
   </PropertyGroup>
 
