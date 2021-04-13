@@ -1,16 +1,10 @@
-using System.Collections.Generic;
-using BehaviorTree.NET.Blackboard;
-
 namespace BehaviorTree.NET.Nodes.Action
 {
-    public abstract class SyncActionNode : ActionNode
+    public abstract class SyncActionNode : IActionNode
     {
-        protected SyncActionNode(IBlackboard blackboard, IEnumerable<BlackboardKey> blackboardEntries)
-            : base(blackboard, blackboardEntries)
-        {
-        }
+        public abstract NodeStatus Tick();
 
-        public override void Halt()
+        public virtual void Halt()
         {
         }
     }

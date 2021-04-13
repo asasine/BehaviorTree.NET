@@ -12,7 +12,7 @@ namespace BehaviorTree.NET.Nodes.Control.Test
         private readonly NodeStatus x;
 
         public ReturnXControlNode(NodeStatus x, IEnumerable<INode> children)
-            : base(null, new BlackboardKey[0], children)
+            : base(children)
         {
             this.x = x;
         }

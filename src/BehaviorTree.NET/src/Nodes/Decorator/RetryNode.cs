@@ -1,30 +1,21 @@
-using BehaviorTree.NET.Exceptions;
 using BehaviorTree.NET.Blackboard;
 
 namespace BehaviorTree.NET.Nodes.Decorator
 {
     public class RetryNode : DecoratorNode
     {
-        public static readonly BlackboardKey KEY_N = new BlackboardKey("n", BlackboardEntryType.Input);
-
-        private readonly IBlackboardReader<int> inputN;
-
+        private readonly IInputVariable<int> n;
         private int numFailures;
 
-        public RetryNode(IBlackboard blackboard, INode child)
-            : base(blackboard, new BlackboardKey[] { KEY_N }, child)
+        public RetryNode(INode child, IInputVariable<int> n)
+            : base(child)
         {
             numFailures = 0;
-            inputN = this.CreateInputEntry<int>(KEY_N);
+            this.n = n;
         }
 
         public override NodeStatus Tick()
         {
-            if (!this.inputN.TryGetValue(out int n))
-            {
-                throw new BlackboardEntryNotProvidedException(inputN.Key);
-            }
-
             var status = this.Child.Tick();
             switch (status)
             {
@@ -32,7 +23,7 @@ namespace BehaviorTree.NET.Nodes.Decorator
                     this.Halt();
                     return status;
                 case NodeStatus.FAILURE:
-                    return HandleFailure(n);
+                    return HandleFailure(this.n.GetValue());
                 case NodeStatus.RUNNING:
                 default:
                     return status;

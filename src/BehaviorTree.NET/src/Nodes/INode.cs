@@ -7,8 +7,5 @@ namespace BehaviorTree.NET.Nodes
     {
         NodeStatus Tick();
         void Halt();
-
-        IBlackboard Blackboard { get; }
-        IReadOnlyCollection<BlackboardKey> BlackboardEntries { get; }
     }
 }

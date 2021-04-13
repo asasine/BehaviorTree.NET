@@ -1,6 +1,5 @@
-using BehaviorTree.NET.Exceptions;
-using BehaviorTree.NET.Nodes.Action.Test;
 using BehaviorTree.NET.Blackboard;
+using BehaviorTree.NET.Nodes.Action.Test;
 using Xunit;
 
 namespace BehaviorTree.NET.Nodes.Decorator.Test
@@ -8,23 +7,11 @@ namespace BehaviorTree.NET.Nodes.Decorator.Test
     public class RetryNodeTests
     {
         [Fact]
-        public void MissingPortThrows()
-        {
-            var blackboard = new Blackboard.Blackboard();
-            var child = new ReturnXNode(NodeStatus.SUCCESS);
-            var node = new RetryNode(blackboard, child);
-            Assert.ThrowsAny<BlackboardEntryNotProvidedException>(() => node.Tick());
-        }
-
-        [Fact]
         public void ReturnsSuccessImmediately()
         {
-            var blackboard = new Blackboard.Blackboard();
-            var writer = blackboard.CreateOutputEntry<int>(RetryNode.KEY_N);
-            writer.SetValue(0);
-
+            var n = new MutableVariable<int>(0);
             var child = new ReturnXNode(NodeStatus.SUCCESS);
-            var node = new RetryNode(blackboard, child);
+            var node = new RetryNode(child, n);
             var status = node.Tick();
             Assert.Equal(NodeStatus.SUCCESS, status);
             Assert.Equal(1, child.Ticks);
@@ -33,12 +20,9 @@ namespace BehaviorTree.NET.Nodes.Decorator.Test
         [Fact]
         public void HaltsAfterSuccess()
         {
-            var blackboard = new Blackboard.Blackboard();
-            var writer = blackboard.CreateOutputEntry<int>(RetryNode.KEY_N);
-            writer.SetValue(0);
-
+            var n = new MutableVariable<int>(0);
             var child = new ReturnXNode(NodeStatus.SUCCESS);
-            var node = new RetryNode(blackboard, child);
+            var node = new RetryNode(child, n);
             var status = node.Tick();
             Assert.Equal(NodeStatus.SUCCESS, status);
             Assert.Equal(1, child.Halts);
@@ -47,12 +31,9 @@ namespace BehaviorTree.NET.Nodes.Decorator.Test
         [Fact]
         public void HaltsAfterFailure()
         {
-            var blackboard = new Blackboard.Blackboard();
-            var writer = blackboard.CreateOutputEntry<int>(RetryNode.KEY_N);
-            writer.SetValue(0);
-
+            var n = new MutableVariable<int>(0);
             var child = new ReturnXNode(NodeStatus.FAILURE);
-            var node = new RetryNode(blackboard, child);
+            var node = new RetryNode(child, n);
             var status = node.Tick();
             Assert.Equal(NodeStatus.FAILURE, status);
             Assert.Equal(1, child.Halts);
@@ -64,12 +45,8 @@ namespace BehaviorTree.NET.Nodes.Decorator.Test
         [InlineData(100)]
         public void DoesNotHaltAfterRunning(int n)
         {
-            var blackboard = new Blackboard.Blackboard();
-            var writer = blackboard.CreateOutputEntry<int>(RetryNode.KEY_N);
-            writer.SetValue(0);
-
             var child = new ReturnXNode(NodeStatus.RUNNING);
-            var node = new RetryNode(blackboard, child);
+            var node = new RetryNode(child, new MutableVariable<int>(n));
             for (int i = 0; i < n; i++)
             {
                 var status = node.Tick();
@@ -86,13 +63,8 @@ namespace BehaviorTree.NET.Nodes.Decorator.Test
         [InlineData(10)]
         public void ReturnsFailureAfterNFailures(int n)
         {
-            var blackboard = new Blackboard.Blackboard();
-            var writer = blackboard.CreateOutputEntry<int>(RetryNode.KEY_N);
-            writer.SetValue(n);
-
-
             var child = new ReturnXNode(NodeStatus.FAILURE);
-            var node = new RetryNode(blackboard, child);
+            var node = new RetryNode(child, new MutableVariable<int>(n));
             for (int i = 0; i < n; i++)
             {
                 Assert.Equal(NodeStatus.RUNNING, node.Tick());
