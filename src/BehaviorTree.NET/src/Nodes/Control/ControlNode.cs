@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace BehaviorTree.NET.Nodes.Control
 {
-    public abstract class ControlNode : INode
+    public abstract class ControlNode : IControlNode
     {
         public ControlNode(IEnumerable<INode> children)
         {
