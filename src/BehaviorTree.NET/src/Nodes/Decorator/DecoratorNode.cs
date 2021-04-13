@@ -1,6 +1,7 @@
 namespace BehaviorTree.NET.Nodes.Decorator
 {
-    public abstract class DecoratorNode : INode
+
+    public abstract class DecoratorNode : IDecoratorNode
     {
         public DecoratorNode(INode child)
         {
