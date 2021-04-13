@@ -1,4 +1,4 @@
-using BehaviorTree.NET.Blackboard;
+using BehaviorTree.NET.Variables;
 
 namespace BehaviorTree.NET.Nodes.Decorator
 {

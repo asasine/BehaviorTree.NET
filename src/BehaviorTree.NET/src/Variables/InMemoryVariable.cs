@@ -1,4 +1,4 @@
-namespace BehaviorTree.NET.Blackboard
+namespace BehaviorTree.NET.Variables
 {
     public class InMemoryVariable<T> : IVariable<T>
     {

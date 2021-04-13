@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using BehaviorTree.NET.Nodes.Action.Test;
-using BehaviorTree.NET.Blackboard;
 using Xunit;
 
 namespace BehaviorTree.NET.Nodes.Control.Test

@@ -1,4 +1,4 @@
-using BehaviorTree.NET.Blackboard;
+using BehaviorTree.NET.Variables;
 using BehaviorTree.NET.Nodes.Action.Test;
 using Xunit;
 
