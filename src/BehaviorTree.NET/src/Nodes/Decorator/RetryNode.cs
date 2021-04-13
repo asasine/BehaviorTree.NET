@@ -4,10 +4,10 @@ namespace BehaviorTree.NET.Nodes.Decorator
 {
     public class RetryNode : DecoratorNode
     {
-        private readonly IInputVariable<int> n;
+        private readonly IConstant<int> n;
         private int numFailures;
 
-        public RetryNode(INode child, IInputVariable<int> n)
+        public RetryNode(INode child, IConstant<int> n)
             : base(child)
         {
             numFailures = 0;

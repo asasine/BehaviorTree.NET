@@ -9,7 +9,7 @@ namespace BehaviorTree.NET.Nodes.Decorator.Test
         [Fact]
         public void ReturnsSuccessImmediately()
         {
-            var n = new MutableVariable<int>(0);
+            var n = new InMemoryVariable<int>(0);
             var child = new ReturnXNode(NodeStatus.SUCCESS);
             var node = new RetryNode(child, n);
             var status = node.Tick();
@@ -20,7 +20,7 @@ namespace BehaviorTree.NET.Nodes.Decorator.Test
         [Fact]
         public void HaltsAfterSuccess()
         {
-            var n = new MutableVariable<int>(0);
+            var n = new InMemoryVariable<int>(0);
             var child = new ReturnXNode(NodeStatus.SUCCESS);
             var node = new RetryNode(child, n);
             var status = node.Tick();
@@ -31,7 +31,7 @@ namespace BehaviorTree.NET.Nodes.Decorator.Test
         [Fact]
         public void HaltsAfterFailure()
         {
-            var n = new MutableVariable<int>(0);
+            var n = new InMemoryVariable<int>(0);
             var child = new ReturnXNode(NodeStatus.FAILURE);
             var node = new RetryNode(child, n);
             var status = node.Tick();
@@ -46,7 +46,7 @@ namespace BehaviorTree.NET.Nodes.Decorator.Test
         public void DoesNotHaltAfterRunning(int n)
         {
             var child = new ReturnXNode(NodeStatus.RUNNING);
-            var node = new RetryNode(child, new MutableVariable<int>(n));
+            var node = new RetryNode(child, new InMemoryVariable<int>(n));
             for (int i = 0; i < n; i++)
             {
                 var status = node.Tick();
@@ -64,7 +64,7 @@ namespace BehaviorTree.NET.Nodes.Decorator.Test
         public void ReturnsFailureAfterNFailures(int n)
         {
             var child = new ReturnXNode(NodeStatus.FAILURE);
-            var node = new RetryNode(child, new MutableVariable<int>(n));
+            var node = new RetryNode(child, new InMemoryVariable<int>(n));
             for (int i = 0; i < n; i++)
             {
                 Assert.Equal(NodeStatus.RUNNING, node.Tick());
