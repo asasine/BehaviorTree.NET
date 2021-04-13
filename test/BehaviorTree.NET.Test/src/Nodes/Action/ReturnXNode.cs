@@ -2,7 +2,7 @@ using Xunit;
 
 namespace BehaviorTree.NET.Nodes.Action.Test
 {
-    public class ReturnXNode : IActionNode
+    public class ReturnXNode : INode
     {
         private readonly NodeStatus x;
 
