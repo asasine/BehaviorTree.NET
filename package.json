@@ -9,8 +9,22 @@
   ],
   "author": {
     "name": "Adam Sasine",
-    "email": "adam.sasine@gmail.com",
     "url": "https://github.com/asasine"
   },
+  "homepage": "https://github.com/asasine/BehaviorTree.NET",
+  "bugs": {
+      "url": "https://github.com/asasine/BehaviorTree.NET/issues"
+  },
+  "license": "MIT",
+  "files": [
+    "/LICENSE.md",
+    "/LICENSE.md.meta",
+    "/README.md",
+    "/README.md.meta",
+    "/package.json",
+    "/package.json.meta",
+    "/Runtime",
+    "/Runtime.meta",
+  ],
   "type": "library"
 }
