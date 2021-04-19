@@ -1,21 +1,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using BehaviorTree.NET.Nodes.Action.Test;
-using Xunit;
+using NUnit.Framework;
 
 namespace BehaviorTree.NET.Nodes.Control.Test
 {
+    [TestFixture]
     public class FallbackNodeTests
     {
-        [Fact]
+        [Test]
         public void NoChildrenReturnsFailure()
         {
             var node = new FallbackNode(new INode[0]);
             var status = node.Tick();
-            Assert.Equal(NodeStatus.FAILURE, status);
+            Assert.That(status, Is.EqualTo(NodeStatus.FAILURE));
         }
 
-        [Fact]
+        [Test]
         public void AllChildrenSucceed()
         {
             // a single successful child in a fallback should return success
@@ -28,17 +29,17 @@ namespace BehaviorTree.NET.Nodes.Control.Test
             var node = new FallbackNode(children);
 
             var status = node.Tick();
-            Assert.Equal(NodeStatus.SUCCESS, status);
+            Assert.That(status, Is.EqualTo(NodeStatus.SUCCESS));
             for (int i = 0; i < children.Length; i++)
             {
                 var child = children[i];
                 var expectedTicks = i == 0 ? 1 : 0;
-                Assert.Equal(expectedTicks, child.Ticks);
-                Assert.Equal(1, child.Halts);
+                Assert.That(child.Ticks, Is.EqualTo(expectedTicks));
+                Assert.That(child.Halts, Is.EqualTo(1));
             }
         }
 
-        [Fact]
+        [Test]
         public void AllChildrenFail()
         {
             // all children failing should fail a fallback
@@ -51,15 +52,15 @@ namespace BehaviorTree.NET.Nodes.Control.Test
             var node = new FallbackNode(children);
 
             var status = node.Tick();
-            Assert.Equal(NodeStatus.FAILURE, status);
+            Assert.That(status, Is.EqualTo(NodeStatus.FAILURE));
             foreach (var child in children)
             {
-                Assert.Equal(1, child.Ticks);
-                Assert.Equal(1, child.Halts);
+                Assert.That(child.Ticks, Is.EqualTo(1));
+                Assert.That(child.Halts, Is.EqualTo(1));
             }
         }
 
-        [Fact]
+        [Test]
         public void ChildrenAfterSuccessNotTicked()
         {
             // two children: success and another
@@ -74,14 +75,14 @@ namespace BehaviorTree.NET.Nodes.Control.Test
             });
 
             var status = node.Tick();
-            Assert.Equal(NodeStatus.SUCCESS, status);
-            Assert.Equal(1, success.Ticks);
-            Assert.Equal(0, other.Ticks);
-            Assert.Equal(1, success.Halts);
-            Assert.Equal(1, other.Halts);
+            Assert.That(status, Is.EqualTo(NodeStatus.SUCCESS));
+            Assert.That(success.Ticks, Is.EqualTo(1));
+            Assert.That(other.Ticks, Is.EqualTo(0));
+            Assert.That(success.Halts, Is.EqualTo(1));
+            Assert.That(other.Halts, Is.EqualTo(1));
         }
 
-        [Fact]
+        [Test]
         public void ChildrenAfterRunningNotTicked()
         {
             // two children: running and another
@@ -96,14 +97,14 @@ namespace BehaviorTree.NET.Nodes.Control.Test
             });
 
             var status = node.Tick();
-            Assert.Equal(NodeStatus.RUNNING, status);
-            Assert.Equal(1, running.Ticks);
-            Assert.Equal(0, other.Ticks);
-            Assert.Equal(0, running.Halts);
-            Assert.Equal(0, other.Halts);
+            Assert.That(status, Is.EqualTo(NodeStatus.RUNNING));
+            Assert.That(running.Ticks, Is.EqualTo(1));
+            Assert.That(other.Ticks, Is.EqualTo(0));
+            Assert.That(running.Halts, Is.EqualTo(0));
+            Assert.That(other.Halts, Is.EqualTo(0));
         }
 
-        [Fact]
+        [Test]
         public void ContinuesAfterFailure()
         {
             // three children: failure, success, and another
@@ -121,25 +122,25 @@ namespace BehaviorTree.NET.Nodes.Control.Test
             });
 
             var status = node.Tick();
-            Assert.Equal(NodeStatus.SUCCESS, status);
-            Assert.Equal(1, failure.Ticks);
-            Assert.Equal(1, success.Ticks);
-            Assert.Equal(0, other.Ticks);
-            Assert.Equal(1, failure.Halts);
-            Assert.Equal(1, success.Halts);
-            Assert.Equal(1, other.Halts);
+            Assert.That(status, Is.EqualTo(NodeStatus.SUCCESS));
+            Assert.That(failure.Ticks, Is.EqualTo(1));
+            Assert.That(success.Ticks, Is.EqualTo(1));
+            Assert.That(other.Ticks, Is.EqualTo(0));
+            Assert.That(failure.Halts, Is.EqualTo(1));
+            Assert.That(success.Halts, Is.EqualTo(1));
+            Assert.That(other.Halts, Is.EqualTo(1));
 
             status = node.Tick();
-            Assert.Equal(NodeStatus.SUCCESS, status);
-            Assert.Equal(2, failure.Ticks);
-            Assert.Equal(2, success.Ticks);
-            Assert.Equal(0, other.Ticks);
-            Assert.Equal(2, failure.Halts);
-            Assert.Equal(2, success.Halts);
-            Assert.Equal(2, other.Halts);
+            Assert.That(status, Is.EqualTo(NodeStatus.SUCCESS));
+            Assert.That(failure.Ticks, Is.EqualTo(2));
+            Assert.That(success.Ticks, Is.EqualTo(2));
+            Assert.That(other.Ticks, Is.EqualTo(0));
+            Assert.That(failure.Halts, Is.EqualTo(2));
+            Assert.That(success.Halts, Is.EqualTo(2));
+            Assert.That(other.Halts, Is.EqualTo(2));
         }
 
-        [Fact]
+        [Test]
         public void ContinuesAfterRunning()
         {
             // three children: failure, running, and another
@@ -157,22 +158,22 @@ namespace BehaviorTree.NET.Nodes.Control.Test
             });
 
             var status = node.Tick();
-            Assert.Equal(NodeStatus.RUNNING, status);
-            Assert.Equal(1, failure.Ticks);
-            Assert.Equal(1, running.Ticks);
-            Assert.Equal(0, other.Ticks);
-            Assert.Equal(0, failure.Halts);
-            Assert.Equal(0, running.Halts);
-            Assert.Equal(0, other.Halts);
+            Assert.That(status, Is.EqualTo(NodeStatus.RUNNING));
+            Assert.That(failure.Ticks, Is.EqualTo(1));
+            Assert.That(running.Ticks, Is.EqualTo(1));
+            Assert.That(other.Ticks, Is.EqualTo(0));
+            Assert.That(failure.Halts, Is.EqualTo(0));
+            Assert.That(running.Halts, Is.EqualTo(0));
+            Assert.That(other.Halts, Is.EqualTo(0));
 
             status = node.Tick();
-            Assert.Equal(NodeStatus.RUNNING, status);
-            Assert.Equal(2, failure.Ticks);
-            Assert.Equal(2, running.Ticks);
-            Assert.Equal(0, other.Ticks);
-            Assert.Equal(0, failure.Halts);
-            Assert.Equal(0, running.Halts);
-            Assert.Equal(0, other.Halts);
+            Assert.That(status, Is.EqualTo(NodeStatus.RUNNING));
+            Assert.That(failure.Ticks, Is.EqualTo(2));
+            Assert.That(running.Ticks, Is.EqualTo(2));
+            Assert.That(other.Ticks, Is.EqualTo(0));
+            Assert.That(failure.Halts, Is.EqualTo(0));
+            Assert.That(running.Halts, Is.EqualTo(0));
+            Assert.That(other.Halts, Is.EqualTo(0));
         }
     }
 }

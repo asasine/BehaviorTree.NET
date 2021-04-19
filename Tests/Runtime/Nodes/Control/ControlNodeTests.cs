@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using BehaviorTree.NET.Nodes.Action.Test;
-using Xunit;
+using NUnit.Framework;
 
 namespace BehaviorTree.NET.Nodes.Control.Test
 {
@@ -27,23 +27,11 @@ namespace BehaviorTree.NET.Nodes.Control.Test
         }
     }
 
+    [TestFixture]
     public class ReturnXControlNodeTests
     {
-        public static IEnumerable<object[]> ReturnsXTestCases()
-        {
-            var statuses = Enum.GetValues(typeof(NodeStatus)).Cast<NodeStatus>().ToArray();
-            foreach (var childStatus in statuses)
-            {
-                foreach (var expectedStatus in statuses)
-                {
-                    yield return new object[] { childStatus, expectedStatus };
-                }
-            }
-        }
-
-        [Theory]
-        [MemberData(nameof(ReturnsXTestCases))]
-        public void ReturnsX(NodeStatus childStatus, NodeStatus expectedStatus)
+        [Test]
+        public void ReturnsX([Values] NodeStatus childStatus, [Values] NodeStatus expectedStatus)
         {
             // always ignores childStatus and simply returns expectedStatus
             var child = new ReturnXNode(childStatus);
@@ -53,17 +41,18 @@ namespace BehaviorTree.NET.Nodes.Control.Test
             });
 
             var actualStatus = node.Tick();
-            Assert.Equal(expectedStatus, actualStatus);
+            Assert.That(actualStatus, Is.EqualTo(expectedStatus));
         }
     }
 
+    [TestFixture]
     public class ControlNodeTests
     {
-        [Theory]
-        [InlineData(0)]
-        [InlineData(1)]
-        [InlineData(10)]
-        [InlineData(100)]
+        [Test]
+        [TestCase(0)]
+        [TestCase(1)]
+        [TestCase(10)]
+        [TestCase(100)]
         public void HaltCallsAllChildrenHalt(int expectedHalts)
         {
             var children = new ReturnXNode[]
@@ -79,14 +68,14 @@ namespace BehaviorTree.NET.Nodes.Control.Test
                 node.Halt();
             }
 
-            Assert.Equal(expectedHalts, node.Halts);
+            Assert.That(node.Halts, Is.EqualTo(expectedHalts));
             foreach (var child in children)
             {
-                Assert.Equal(expectedHalts, child.Halts);
+                Assert.That(child.Halts, Is.EqualTo(expectedHalts));
             }
         }
 
-        [Fact]
+        [Test]
         public void HaltChildCallsChildHalt()
         {
             var children = new ReturnXNode[]
@@ -108,11 +97,11 @@ namespace BehaviorTree.NET.Nodes.Control.Test
                     var child = children[i];
                     if (i <= haltIndex)
                     {
-                        Assert.Equal(1, child.Halts);
+                        Assert.That(child.Halts, Is.EqualTo(1));
                     }
                     else
                     {
-                        Assert.Equal(0, child.Halts);
+                        Assert.That(child.Halts, Is.EqualTo(0));
                     }
                 }
             }

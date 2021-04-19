@@ -1,38 +1,39 @@
 using BehaviorTree.NET.Nodes.Action;
 using BehaviorTree.NET.Nodes.Action.Test;
-using Xunit;
+using NUnit.Framework;
 
 namespace BehaviorTree.NET.Nodes.Decorator.Test
 {
+    [TestFixture]
     public class InverterNodeTests
     {
-        [Fact]
+        [Test]
         public void SuccessChildReturnsFailure()
         {
             var child = new AlwaysSuccessNode();
             var inverterNode = new InverterNode(child);
 
             var status = inverterNode.Tick();
-            Assert.Equal(NodeStatus.FAILURE, status);
+            Assert.That(status, Is.EqualTo(NodeStatus.FAILURE));
         }
 
-        [Fact]
+        [Test]
         public void FailureChildReturnsSuccess()
         {
             var child = new AlwaysFailureNode();
             var inverterNode = new InverterNode(child);
 
             var status = inverterNode.Tick();
-            Assert.Equal(NodeStatus.SUCCESS, status);
+            Assert.That(status, Is.EqualTo(NodeStatus.SUCCESS));
         }
 
-        [Fact]
+        [Test]
         public void RunningChildReturnsRunning()
         {
             var child = new ReturnXNode(NodeStatus.RUNNING);
             var node = new InverterNode(child);
             var status = node.Tick();
-            Assert.Equal(NodeStatus.RUNNING, status);
+            Assert.That(status, Is.EqualTo(NodeStatus.RUNNING));
         }
     }
 }

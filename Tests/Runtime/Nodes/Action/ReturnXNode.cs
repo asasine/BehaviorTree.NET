@@ -1,4 +1,4 @@
-using Xunit;
+using NUnit.Framework;
 
 namespace BehaviorTree.NET.Nodes.Action.Test
 {
@@ -28,52 +28,53 @@ namespace BehaviorTree.NET.Nodes.Action.Test
         }
     }
 
+    [TestFixture]
     public class ReturnXNodeTests
     {
-        [Theory]
-        [InlineData(NodeStatus.SUCCESS)]
-        [InlineData(NodeStatus.FAILURE)]
-        [InlineData(NodeStatus.RUNNING)]
+        [Test]
+        [TestCase(NodeStatus.SUCCESS)]
+        [TestCase(NodeStatus.FAILURE)]
+        [TestCase(NodeStatus.RUNNING)]
         public void NoTicks(NodeStatus expectedStatus)
         {
             var node = new ReturnXNode(expectedStatus);
-            Assert.Equal(0, node.Ticks);
-            Assert.Equal(0, node.Halts);
+            Assert.That(node.Ticks, Is.EqualTo(0));
+            Assert.That(node.Halts, Is.EqualTo(0));
         }
 
-        [Theory]
-        [InlineData(NodeStatus.SUCCESS)]
-        [InlineData(NodeStatus.FAILURE)]
-        [InlineData(NodeStatus.RUNNING)]
+        [Test]
+        [TestCase(NodeStatus.SUCCESS)]
+        [TestCase(NodeStatus.FAILURE)]
+        [TestCase(NodeStatus.RUNNING)]
         public void ReturnsExpectedOnce(NodeStatus expectedStatus)
         {
             var node = new ReturnXNode(expectedStatus);
             var actualStatus = node.Tick();
-            Assert.Equal(expectedStatus, actualStatus);
-            Assert.Equal(1, node.Ticks);
+            Assert.That(actualStatus, Is.EqualTo(expectedStatus));
+            Assert.That(node.Ticks, Is.EqualTo(1));
         }
 
-        [Theory]
-        [InlineData(NodeStatus.SUCCESS, 10)]
-        [InlineData(NodeStatus.FAILURE, 100)]
-        [InlineData(NodeStatus.RUNNING, 42)]
+        [Test]
+        [TestCase(NodeStatus.SUCCESS, 10)]
+        [TestCase(NodeStatus.FAILURE, 100)]
+        [TestCase(NodeStatus.RUNNING, 42)]
         public void ReturnsExpectedNTimes(NodeStatus expectedStatus, int expectedTicks)
         {
             var node = new ReturnXNode(expectedStatus);
             for (int i = 0; i < expectedTicks; i++)
             {
                 var actualStatus = node.Tick();
-                Assert.Equal(expectedStatus, actualStatus);
+                Assert.That(actualStatus, Is.EqualTo(expectedStatus));
             }
 
-            Assert.Equal(expectedTicks, node.Ticks);
+            Assert.That(node.Ticks, Is.EqualTo(expectedTicks));
         }
 
-        [Theory]
-        [InlineData(0)]
-        [InlineData(1)]
-        [InlineData(10)]
-        [InlineData(100)]
+        [Test]
+        [TestCase(0)]
+        [TestCase(1)]
+        [TestCase(10)]
+        [TestCase(100)]
         public void HaltCounter(int expectedHalts)
         {
             var node = new ReturnXNode(NodeStatus.SUCCESS);
@@ -82,7 +83,7 @@ namespace BehaviorTree.NET.Nodes.Action.Test
                 node.Halt();
             }
 
-            Assert.Equal(expectedHalts, node.Halts);
+            Assert.That(node.Halts, Is.EqualTo(expectedHalts));
         }
     }
 }

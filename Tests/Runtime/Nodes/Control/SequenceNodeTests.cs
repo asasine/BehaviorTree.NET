@@ -1,21 +1,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using BehaviorTree.NET.Nodes.Action.Test;
-using Xunit;
+using NUnit.Framework;
 
 namespace BehaviorTree.NET.Nodes.Control.Test
 {
+    [TestFixture]
     public class SequenceNodeTests
     {
-        [Fact]
+        [Test]
         public void NoChildrenReturnsSuccess()
         {
             var node = new SequenceNode(new INode[0]);
             var status = node.Tick();
-            Assert.Equal(NodeStatus.SUCCESS, status);
+            Assert.That(status, Is.EqualTo(NodeStatus.SUCCESS));
         }
 
-        [Fact]
+        [Test]
         public void AllChildrenSucceed()
         {
             // a successful sequence returns success
@@ -28,15 +29,15 @@ namespace BehaviorTree.NET.Nodes.Control.Test
             var node = new SequenceNode(children);
 
             var status = node.Tick();
-            Assert.Equal(NodeStatus.SUCCESS, status);
+            Assert.That(status, Is.EqualTo(NodeStatus.SUCCESS));
             foreach (var child in children)
             {
-                Assert.Equal(1, child.Ticks);
-                Assert.Equal(1, child.Halts);
+                Assert.That(child.Ticks, Is.EqualTo(1));
+                Assert.That(child.Halts, Is.EqualTo(1));
             }
         }
 
-        [Fact]
+        [Test]
         public void AllChildrenFail()
         {
             // a failing sequence should return failure
@@ -49,17 +50,17 @@ namespace BehaviorTree.NET.Nodes.Control.Test
             var node = new SequenceNode(children);
 
             var status = node.Tick();
-            Assert.Equal(NodeStatus.FAILURE, status);
+            Assert.That(status, Is.EqualTo(NodeStatus.FAILURE));
             for (int i = 0; i < children.Length; i++)
             {
                 var child = children[i];
                 var expectedTicks = i == 0 ? 1 : 0;
-                Assert.Equal(expectedTicks, child.Ticks);
-                Assert.Equal(1, child.Halts);
+                Assert.That(child.Ticks, Is.EqualTo(expectedTicks));
+                Assert.That(child.Halts, Is.EqualTo(1));
             }
         }
 
-        [Fact]
+        [Test]
         public void ChildrenAfterFailureNotTicked()
         {
             // two children, one that always fails and another
@@ -74,14 +75,14 @@ namespace BehaviorTree.NET.Nodes.Control.Test
             });
 
             var status = node.Tick();
-            Assert.Equal(NodeStatus.FAILURE, status);
-            Assert.Equal(1, alwaysFailureChild.Ticks);
-            Assert.Equal(0, otherChild.Ticks);
-            Assert.Equal(1, alwaysFailureChild.Halts);
-            Assert.Equal(1, otherChild.Halts);
+            Assert.That(status, Is.EqualTo(NodeStatus.FAILURE));
+            Assert.That(alwaysFailureChild.Ticks, Is.EqualTo(1));
+            Assert.That(otherChild.Ticks, Is.EqualTo(0));
+            Assert.That(alwaysFailureChild.Halts, Is.EqualTo(1));
+            Assert.That(otherChild.Halts, Is.EqualTo(1));
         }
 
-        [Fact]
+        [Test]
         public void ChildrenAfterRunningNotTicked()
         {
             // two children, one that returns running and another
@@ -96,14 +97,14 @@ namespace BehaviorTree.NET.Nodes.Control.Test
             });
 
             var status = node.Tick();
-            Assert.Equal(NodeStatus.RUNNING, status);
-            Assert.Equal(1, alwaysRunningChild.Ticks);
-            Assert.Equal(0, otherChild.Ticks);
-            Assert.Equal(0, alwaysRunningChild.Halts);
-            Assert.Equal(0, otherChild.Halts);
+            Assert.That(status, Is.EqualTo(NodeStatus.RUNNING));
+            Assert.That(alwaysRunningChild.Ticks, Is.EqualTo(1));
+            Assert.That(otherChild.Ticks, Is.EqualTo(0));
+            Assert.That(alwaysRunningChild.Halts, Is.EqualTo(0));
+            Assert.That(otherChild.Halts, Is.EqualTo(0));
         }
 
-        [Fact]
+        [Test]
         public void ContinuesAfterSuccess()
         {
             // three children: success, failure, other
@@ -121,25 +122,25 @@ namespace BehaviorTree.NET.Nodes.Control.Test
             });
 
             var status = node.Tick();
-            Assert.Equal(NodeStatus.FAILURE, status);
-            Assert.Equal(1, alwaysSuccessChild.Ticks);
-            Assert.Equal(1, alwaysFailureChild.Ticks);
-            Assert.Equal(0, otherChild.Ticks);
-            Assert.Equal(1, alwaysSuccessChild.Halts);
-            Assert.Equal(1, alwaysFailureChild.Halts);
-            Assert.Equal(1, otherChild.Halts);
+            Assert.That(status, Is.EqualTo(NodeStatus.FAILURE));
+            Assert.That(alwaysSuccessChild.Ticks, Is.EqualTo(1));
+            Assert.That(alwaysFailureChild.Ticks, Is.EqualTo(1));
+            Assert.That(otherChild.Ticks, Is.EqualTo(0));
+            Assert.That(alwaysSuccessChild.Halts, Is.EqualTo(1));
+            Assert.That(alwaysFailureChild.Halts, Is.EqualTo(1));
+            Assert.That(otherChild.Halts, Is.EqualTo(1));
 
             status = node.Tick();
-            Assert.Equal(NodeStatus.FAILURE, status);
-            Assert.Equal(2, alwaysSuccessChild.Ticks);
-            Assert.Equal(2, alwaysFailureChild.Ticks);
-            Assert.Equal(0, otherChild.Ticks);
-            Assert.Equal(2, alwaysSuccessChild.Halts);
-            Assert.Equal(2, alwaysFailureChild.Halts);
-            Assert.Equal(2, otherChild.Halts);
+            Assert.That(status, Is.EqualTo(NodeStatus.FAILURE));
+            Assert.That(alwaysSuccessChild.Ticks, Is.EqualTo(2));
+            Assert.That(alwaysFailureChild.Ticks, Is.EqualTo(2));
+            Assert.That(otherChild.Ticks, Is.EqualTo(0));
+            Assert.That(alwaysSuccessChild.Halts, Is.EqualTo(2));
+            Assert.That(alwaysFailureChild.Halts, Is.EqualTo(2));
+            Assert.That(otherChild.Halts, Is.EqualTo(2));
         }
 
-        [Fact]
+        [Test]
         public void ResumesFromRunning()
         {
             // three children: success, running, other
@@ -157,25 +158,25 @@ namespace BehaviorTree.NET.Nodes.Control.Test
             });
 
             var status = node.Tick();
-            Assert.Equal(NodeStatus.RUNNING, status);
-            Assert.Equal(1, alwaysSuccessChild.Ticks);
-            Assert.Equal(1, alwaysRunningChild.Ticks);
-            Assert.Equal(0, otherChild.Ticks);
-            Assert.Equal(0, alwaysSuccessChild.Halts);
-            Assert.Equal(0, alwaysRunningChild.Halts);
-            Assert.Equal(0, otherChild.Halts);
+            Assert.That(status, Is.EqualTo(NodeStatus.RUNNING));
+            Assert.That(alwaysSuccessChild.Ticks, Is.EqualTo(1));
+            Assert.That(alwaysRunningChild.Ticks, Is.EqualTo(1));
+            Assert.That(otherChild.Ticks, Is.EqualTo(0));
+            Assert.That(alwaysSuccessChild.Halts, Is.EqualTo(0));
+            Assert.That(alwaysRunningChild.Halts, Is.EqualTo(0));
+            Assert.That(otherChild.Halts, Is.EqualTo(0));
 
             status = node.Tick();
-            Assert.Equal(NodeStatus.RUNNING, status);
-            Assert.Equal(1, alwaysSuccessChild.Ticks);
-            Assert.Equal(2, alwaysRunningChild.Ticks);
-            Assert.Equal(0, otherChild.Ticks);
-            Assert.Equal(0, alwaysSuccessChild.Halts);
-            Assert.Equal(0, alwaysRunningChild.Halts);
-            Assert.Equal(0, otherChild.Halts);
+            Assert.That(status, Is.EqualTo(NodeStatus.RUNNING));
+            Assert.That(alwaysSuccessChild.Ticks, Is.EqualTo(1));
+            Assert.That(alwaysRunningChild.Ticks, Is.EqualTo(2));
+            Assert.That(otherChild.Ticks, Is.EqualTo(0));
+            Assert.That(alwaysSuccessChild.Halts, Is.EqualTo(0));
+            Assert.That(alwaysRunningChild.Halts, Is.EqualTo(0));
+            Assert.That(otherChild.Halts, Is.EqualTo(0));
         }
 
-        [Fact]
+        [Test]
         public void RestartsAfterHalt()
         {
             // sequence should restart from beginning when halted while still running
@@ -191,27 +192,27 @@ namespace BehaviorTree.NET.Nodes.Control.Test
 
             // starts at the beginning
             var status = node.Tick();
-            Assert.Equal(NodeStatus.RUNNING, status);
-            Assert.Equal(1, alwaysSuccessChild.Ticks);
-            Assert.Equal(1, alwaysRunningChild.Ticks);
-            Assert.Equal(0, otherChild.Ticks);
+            Assert.That(status, Is.EqualTo(NodeStatus.RUNNING));
+            Assert.That(alwaysSuccessChild.Ticks, Is.EqualTo(1));
+            Assert.That(alwaysRunningChild.Ticks, Is.EqualTo(1));
+            Assert.That(otherChild.Ticks, Is.EqualTo(0));
 
             // resumes from running child
             status = node.Tick();
-            Assert.Equal(1, alwaysSuccessChild.Ticks);
-            Assert.Equal(2, alwaysRunningChild.Ticks);
-            Assert.Equal(0, otherChild.Ticks);
+            Assert.That(alwaysSuccessChild.Ticks, Is.EqualTo(1));
+            Assert.That(alwaysRunningChild.Ticks, Is.EqualTo(2));
+            Assert.That(otherChild.Ticks, Is.EqualTo(0));
 
             node.Halt();
-            Assert.Equal(1, alwaysSuccessChild.Halts);
-            Assert.Equal(1, alwaysRunningChild.Halts);
-            Assert.Equal(1, otherChild.Halts);
+            Assert.That(alwaysSuccessChild.Halts, Is.EqualTo(1));
+            Assert.That(alwaysRunningChild.Halts, Is.EqualTo(1));
+            Assert.That(otherChild.Halts, Is.EqualTo(1));
 
             // restarts at the beginning
             status = node.Tick();
-            Assert.Equal(2, alwaysSuccessChild.Ticks);
-            Assert.Equal(3, alwaysRunningChild.Ticks);
-            Assert.Equal(0, otherChild.Ticks);
+            Assert.That(alwaysSuccessChild.Ticks, Is.EqualTo(2));
+            Assert.That(alwaysRunningChild.Ticks, Is.EqualTo(3));
+            Assert.That(otherChild.Ticks, Is.EqualTo(0));
         }
     }
 }

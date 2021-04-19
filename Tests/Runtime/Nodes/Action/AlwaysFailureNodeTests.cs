@@ -1,15 +1,16 @@
-using Xunit;
+using NUnit.Framework;
 
 namespace BehaviorTree.NET.Nodes.Action.Test
 {
+    [TestFixture]
     public class AlwaysFailureNodeTests
     {
-        [Fact]
+        [Test]
         public void TickReturnsFailure()
         {
             var node = new AlwaysFailureNode();
             var status = node.Tick();
-            Assert.Equal(NodeStatus.FAILURE, status);
+            Assert.That(status, Is.EqualTo(NodeStatus.FAILURE));
         }
     }
 }

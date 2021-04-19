@@ -1,39 +1,40 @@
 using BehaviorTree.NET.Nodes.Action;
 using BehaviorTree.NET.Nodes.Action.Test;
-using Xunit;
+using NUnit.Framework;
 
 namespace BehaviorTree.NET.Nodes.Decorator.Test
 {
+    [TestFixture]
     public class ForceFailureNodeTests
     {
-        [Fact]
+        [Test]
         public void SuccessChildReturnsFailure()
         {
             var child = new AlwaysSuccessNode();
             var node = new ForceFailureNode(child);
 
             var status = node.Tick();
-            Assert.Equal(NodeStatus.FAILURE, status);
+            Assert.That(status, Is.EqualTo(NodeStatus.FAILURE));
         }
 
-        [Fact]
+        [Test]
         public void FailureChildReturnsFailure()
         {
             var child = new AlwaysFailureNode();
             var node = new ForceFailureNode(child);
 
             var status = node.Tick();
-            Assert.Equal(NodeStatus.FAILURE, status);
+            Assert.That(status, Is.EqualTo(NodeStatus.FAILURE));
         }
 
-        [Fact]
+        [Test]
         public void RunningChildReturnsRunning()
         {
             var child = new ReturnXNode(NodeStatus.RUNNING);
             var node = new ForceFailureNode(child);
 
             var status = node.Tick();
-            Assert.Equal(NodeStatus.RUNNING, status);
+            Assert.That(status, Is.EqualTo(NodeStatus.RUNNING));
         }
     }
 }
