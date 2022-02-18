@@ -141,7 +141,7 @@ namespace BehaviorTree.NET.Nodes.Control.Test
         }
 
         [Test]
-        public void ContinuesAfterRunning()
+        public void RestartsAfterRunning()
         {
             // three children: failure, running, and another
             // index should continue after failure and tick running
