@@ -2,29 +2,11 @@ using NUnit.Framework;
 
 namespace BehaviorTree.NET.Nodes.Action.Test
 {
-    public class ReturnXNode : INode
+    public class ReturnXNode : ReturnStatusFromCollectionNode
     {
-        private readonly NodeStatus x;
-
         public ReturnXNode(NodeStatus x)
+            : base(new NodeStatus[] { x })
         {
-            this.x = x;
-            this.Ticks = 0;
-            this.Halts = 0;
-        }
-
-        public int Ticks { get; private set; }
-        public int Halts { get; private set; }
-
-        public NodeStatus Tick()
-        {
-            this.Ticks++;
-            return this.x;
-        }
-
-        public void Halt()
-        {
-            this.Halts++;
         }
     }
 
