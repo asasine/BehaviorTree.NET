@@ -141,7 +141,7 @@ namespace BehaviorTree.NET.Nodes.Control.Test
         }
 
         [Test]
-        public void ContinuesAfterRunning()
+        public void RestartsAfterRunning()
         {
             // three children: failure, running, and another
             // index should continue after failure and tick running
@@ -174,6 +174,121 @@ namespace BehaviorTree.NET.Nodes.Control.Test
             Assert.That(failure.Halts, Is.EqualTo(0));
             Assert.That(running.Halts, Is.EqualTo(0));
             Assert.That(other.Halts, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void HaltsChildrenAfterNewChildReturnsRunning()
+        {
+            // four children: flip_flop, failure, running, and other
+            // flip_flop returns failure on its first tick, running on its second tick
+            // after flip_flop returns running, failure and running should be halted
+            // after flip_flop returns running, other should not be halted
+            // after flip_flop returns running, flip_flop should not be halted
+            var flip_flop = new ReturnStatusFromCollectionNode(NodeStatus.FAILURE, NodeStatus.RUNNING);
+            var failure = new ReturnXNode(NodeStatus.FAILURE);
+            var running = new ReturnXNode(NodeStatus.RUNNING);
+            var other = new ReturnXNode(NodeStatus.SUCCESS);
+            var node = new FallbackNode(new List<INode>
+            {
+                flip_flop,
+                failure,
+                running,
+                other,
+            });
+
+            var status = node.Tick();
+            Assert.That(status, Is.EqualTo(NodeStatus.RUNNING));
+            Assert.That(flip_flop.Ticks, Is.EqualTo(1));
+            Assert.That(failure.Ticks, Is.EqualTo(1));
+            Assert.That(running.Ticks, Is.EqualTo(1));
+            Assert.That(other.Ticks, Is.EqualTo(0));
+            Assert.That(flip_flop.Halts, Is.EqualTo(0));
+            Assert.That(failure.Halts, Is.EqualTo(0));
+            Assert.That(running.Halts, Is.EqualTo(0));
+            Assert.That(other.Halts, Is.EqualTo(0));
+
+            status = node.Tick();
+            Assert.That(status, Is.EqualTo(NodeStatus.RUNNING));
+            Assert.That(flip_flop.Ticks, Is.EqualTo(2));
+            Assert.That(failure.Ticks, Is.EqualTo(1));
+            Assert.That(running.Ticks, Is.EqualTo(1));
+            Assert.That(flip_flop.Halts, Is.EqualTo(0));
+            Assert.That(failure.Halts, Is.EqualTo(1));
+            Assert.That(running.Halts, Is.EqualTo(1));
+            Assert.That(other.Halts, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void RepeatedRunningDoesNotHalt()
+        {
+            // two children: failure and running
+            // both nodes should not be halted
+            var failure = new ReturnXNode(NodeStatus.FAILURE);
+            var running = new ReturnXNode(NodeStatus.RUNNING);
+            var node = new FallbackNode(new List<INode>
+            {
+                failure,
+                running,
+            });
+
+            node.Tick();
+            node.Tick();
+
+            Assert.That(failure.Ticks, Is.EqualTo(2));
+            Assert.That(running.Ticks, Is.EqualTo(2));
+            Assert.That(failure.Halts, Is.EqualTo(0));
+            Assert.That(running.Halts, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void RunningAfterHaltAfterRunningDoesNotHaltPreviouslyChildren()
+        {
+            // four children: flip_flop, failure, running, and other
+            // the fallback is ticked, halted, and ticked
+            // flip_flop will return failure on the first tick, running on the second tick
+            // normally, after flip_flop returns running, failure and running should be halted
+            // since the fallback is halted between the first and second tick, they should not be halted
+            var flip_flop = new ReturnStatusFromCollectionNode(NodeStatus.FAILURE, NodeStatus.RUNNING);
+            var failure = new ReturnXNode(NodeStatus.FAILURE);
+            var running = new ReturnXNode(NodeStatus.RUNNING);
+            var other = new ReturnXNode(NodeStatus.SUCCESS);
+            var node = new FallbackNode(new List<INode>
+            {
+                flip_flop,
+                failure,
+                running,
+                other,
+            });
+
+            var status = node.Tick();
+            Assert.That(status, Is.EqualTo(NodeStatus.RUNNING));
+            Assert.That(flip_flop.Ticks, Is.EqualTo(1));
+            Assert.That(failure.Ticks, Is.EqualTo(1));
+            Assert.That(running.Ticks, Is.EqualTo(1));
+            Assert.That(other.Ticks, Is.EqualTo(0));
+            Assert.That(flip_flop.Halts, Is.EqualTo(0));
+            Assert.That(failure.Halts, Is.EqualTo(0));
+            Assert.That(running.Halts, Is.EqualTo(0));
+            Assert.That(other.Halts, Is.EqualTo(0));
+
+            node.Halt();
+            Assert.That(flip_flop.Halts, Is.EqualTo(1));
+            Assert.That(failure.Halts, Is.EqualTo(1));
+            Assert.That(running.Halts, Is.EqualTo(1));
+            Assert.That(other.Halts, Is.EqualTo(1));
+
+            // prime flip_flop so that it's next tick, the one from fallback, is running
+            flip_flop.Tick();
+
+            status = node.Tick();
+            Assert.That(status, Is.EqualTo(NodeStatus.RUNNING));
+            Assert.That(flip_flop.Ticks, Is.EqualTo(3)); // two from fallback, one from primer
+            Assert.That(failure.Ticks, Is.EqualTo(1));
+            Assert.That(running.Ticks, Is.EqualTo(1));
+            Assert.That(flip_flop.Halts, Is.EqualTo(1));
+            Assert.That(failure.Halts, Is.EqualTo(1));
+            Assert.That(running.Halts, Is.EqualTo(1));
+            Assert.That(other.Halts, Is.EqualTo(1));
         }
     }
 }
