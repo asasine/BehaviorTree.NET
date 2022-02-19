@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <PackageId>BehaviorTree.NET</PackageId>
-    <Version>0.1.1</Version>
+    <Version>0.2.0</Version>
     <Authors>asasine</Authors>
     <Company>asasine</Company>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
