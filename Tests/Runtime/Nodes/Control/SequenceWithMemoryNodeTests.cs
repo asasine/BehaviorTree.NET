@@ -6,12 +6,12 @@ using NUnit.Framework;
 namespace BehaviorTree.NET.Nodes.Control.Test
 {
     [TestFixture]
-    public class SequenceNodeTests
+    public class SequenceWithMemoryNodeTests
     {
         [Test]
         public void NoChildrenReturnsSuccess()
         {
-            var node = new SequenceNode(new INode[0]);
+            var node = new SequenceWithMemoryNode(new INode[0]);
             var status = node.Tick();
             Assert.That(status, Is.EqualTo(NodeStatus.SUCCESS));
         }
@@ -26,7 +26,7 @@ namespace BehaviorTree.NET.Nodes.Control.Test
                 .Select(_ => new ReturnXNode(NodeStatus.SUCCESS))
                 .ToArray();
 
-            var node = new SequenceNode(children);
+            var node = new SequenceWithMemoryNode(children);
 
             var status = node.Tick();
             Assert.That(status, Is.EqualTo(NodeStatus.SUCCESS));
@@ -47,7 +47,7 @@ namespace BehaviorTree.NET.Nodes.Control.Test
                 .Select(_ => new ReturnXNode(NodeStatus.FAILURE))
                 .ToArray();
 
-            var node = new SequenceNode(children);
+            var node = new SequenceWithMemoryNode(children);
 
             var status = node.Tick();
             Assert.That(status, Is.EqualTo(NodeStatus.FAILURE));
@@ -68,7 +68,7 @@ namespace BehaviorTree.NET.Nodes.Control.Test
             // halt should be called on all children after a failure
             var alwaysFailureChild = new ReturnXNode(NodeStatus.FAILURE);
             var otherChild = new ReturnXNode(NodeStatus.SUCCESS);
-            var node = new SequenceNode(new List<INode>
+            var node = new SequenceWithMemoryNode(new List<INode>
             {
                 alwaysFailureChild,
                 otherChild,
@@ -90,7 +90,7 @@ namespace BehaviorTree.NET.Nodes.Control.Test
             // since the sequence is incomplete, halt should not be called yet
             var alwaysRunningChild = new ReturnXNode(NodeStatus.RUNNING);
             var otherChild = new ReturnXNode(NodeStatus.SUCCESS);
-            var node = new SequenceNode(new List<INode>
+            var node = new SequenceWithMemoryNode(new List<INode>
             {
                 alwaysRunningChild,
                 otherChild,
@@ -114,7 +114,7 @@ namespace BehaviorTree.NET.Nodes.Control.Test
             var alwaysSuccessChild = new ReturnXNode(NodeStatus.SUCCESS);
             var alwaysFailureChild = new ReturnXNode(NodeStatus.FAILURE);
             var otherChild = new ReturnXNode(NodeStatus.SUCCESS);
-            var node = new SequenceNode(new List<INode>
+            var node = new SequenceWithMemoryNode(new List<INode>
             {
                 alwaysSuccessChild,
                 alwaysFailureChild,
@@ -150,7 +150,7 @@ namespace BehaviorTree.NET.Nodes.Control.Test
             var alwaysSuccessChild = new ReturnXNode(NodeStatus.SUCCESS);
             var alwaysRunningChild = new ReturnXNode(NodeStatus.RUNNING);
             var otherChild = new ReturnXNode(NodeStatus.SUCCESS);
-            var node = new SequenceNode(new List<INode>
+            var node = new SequenceWithMemoryNode(new List<INode>
             {
                 alwaysSuccessChild,
                 alwaysRunningChild,
@@ -183,7 +183,7 @@ namespace BehaviorTree.NET.Nodes.Control.Test
             var alwaysSuccessChild = new ReturnXNode(NodeStatus.SUCCESS);
             var alwaysRunningChild = new ReturnXNode(NodeStatus.RUNNING);
             var otherChild = new ReturnXNode(NodeStatus.SUCCESS);
-            var node = new SequenceNode(new List<INode>
+            var node = new SequenceWithMemoryNode(new List<INode>
             {
                 alwaysSuccessChild,
                 alwaysRunningChild,

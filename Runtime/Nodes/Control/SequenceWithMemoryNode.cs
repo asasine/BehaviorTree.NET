@@ -2,11 +2,11 @@ using System.Collections.Generic;
 
 namespace BehaviorTree.NET.Nodes.Control
 {
-    public class SequenceNode : ControlNode
+    public class SequenceWithMemoryNode : ControlNode
     {
         private int index;
 
-        public SequenceNode(IEnumerable<INode> children)
+        public SequenceWithMemoryNode(IEnumerable<INode> children)
             : base(children)
         {
             this.index = 0;
