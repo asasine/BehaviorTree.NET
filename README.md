@@ -28,7 +28,7 @@ Installing with NPM enables easier updates through the Unity Package Manager and
 1. Open the [Unity Package Manager](https://docs.unity3d.com/Manual/upm-ui.html) window
 1. In the top bar, change the packages to `Packages: In Project`
 1. Select `BehaviorTree.NET`
-1. In the bottom bar, click `Update to v0.1.1`
+1. In the bottom bar, click `Update to v0.2.0`
 
 ### Install from Git URL
 Installing from a Git URL allows you to fully customize which version of the package you use. If you are forking the package repository and not releasing on NPM, or are developing smaller features and bug fixes, you may find this approach useful.
@@ -38,7 +38,7 @@ Installing from a Git URL allows you to fully customize which version of the pac
 1. In the dropdown, select `Add package from git URL` from the add menu
 1. In the text box, enter the GitHub URL of this package: `https://github.com/asasine/BehaviorTree.NET.git`
     - You may also specify releases using tags
-        - For example, targeting v0.1.1 would use the URL `https://github.com/asasine/BehaviorTree.NET.git#v0.1.1`
+        - For example, targeting v0.2.0 would use the URL `https://github.com/asasine/BehaviorTree.NET.git#v0.2.0`
     - You can find all releases listed [here](https://github.com/asasine/BehaviorTree.NET/releases)
     - More information on specifying git references is available in the [Unity Manual](https://docs.unity3d.com/Manual/upm-git.html#revision)
 1. In the text box, click `Add`
@@ -52,4 +52,3 @@ Installing from disk lets you use a clone of the repo. This is useful if you are
 1. In the file explorer, navigate to the cloned repository and open the `package.json` file
 
 Install the package into Unity as a local or git package by following the steps at https://docs.unity3d.com/Manual/upm-concepts.html#Sources.
-
