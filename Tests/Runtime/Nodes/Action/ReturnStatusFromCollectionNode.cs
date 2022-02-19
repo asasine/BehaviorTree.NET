@@ -40,6 +40,7 @@ namespace BehaviorTree.NET.Nodes.Action.Test
         public void Halt()
         {
             this.Halts++;
+            this.statusIndex = 0;
         }
     }
 
@@ -138,6 +139,16 @@ namespace BehaviorTree.NET.Nodes.Action.Test
             }
 
             Assert.That(node.Halts, Is.EqualTo(expectedHalts));
+        }
+
+        [Test]
+        public void RestartsAfterHalt()
+        {
+            var node = new ReturnStatusFromCollectionNode(NodeStatus.SUCCESS, NodeStatus.FAILURE);
+            node.Tick();
+            node.Halt();
+            var actualStatus = node.Tick();
+            Assert.That(actualStatus, Is.EqualTo(NodeStatus.SUCCESS));
         }
     }
 }
