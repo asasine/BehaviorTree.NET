@@ -1,0 +1,20 @@
+{
+    "name": "BehaviorTree.Editor.Tests",
+    "rootNamespace": "",
+    "references": [
+        "BehaviorTree.Runtime"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

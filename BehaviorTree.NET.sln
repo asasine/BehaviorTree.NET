@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BehaviorTree.NET", "Runtime
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{CE84C81E-59F1-4355-8C8C-7575DF3B7F8E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BehaviorTree.NET.Test", "Tests\Runtime\BehaviorTree.NET.Test.csproj", "{8F934D9C-E2B3-4FF3-993E-10E24232254B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BehaviorTree.NET.Test", "Tests\Editor\BehaviorTree.NET.Test.csproj", "{8F934D9C-E2B3-4FF3-993E-10E24232254B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
